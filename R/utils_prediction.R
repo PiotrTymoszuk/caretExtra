@@ -60,7 +60,6 @@
 #' @description a helper function extracting the predictions for the cross-validation data set from
 #' a classification caretx model.
 #' @return a predx object.
-#' @export
 
   predict_class_cv <- function(class_model) {
 
@@ -127,7 +126,7 @@
 
     ## finding the outcome variable
 
-    outcome_var <- as.character(eval(class_model$call$form))[2]
+    outcome_var <- as.character(formula(class_model)[[2]])
 
     preds <- list()
 
@@ -163,7 +162,7 @@
 
     ## finding the outcome variable
 
-    outcome_var <- as.character(eval(reg_model$call$form))[2]
+    outcome_var <- as.character(formula(reg_model)[[2]])
 
     preds <- list()
 

@@ -17,6 +17,8 @@
 #' @param point_alpha plot point alpha.
 #' @param show_trend logical, should a trend line be displayed?
 #' @param trend_method a method for fitting the trend line, see \code{\link[ggplot2]{geom_smooth}} for details, defaults to 'lm'.
+#' @param show_calibration logical, should a line with slope 1 and intercept 1 be displayed in the plot?
+#' @param line_size size of the calibration or trend line.
 #' @param plot_title plot title.
 #' @param plot_subtitle plot subtitle.
 #' @param plot_tag plot tag, number of complete observations if not specified by the user.
@@ -37,6 +39,8 @@
                               point_alpha = 0.75,
                               show_trend = TRUE,
                               trend_method = 'lm',
+                              show_calibration = TRUE,
+                              line_size = 0.5,
                               plot_title = NULL,
                               plot_subtitle = NULL,
                               plot_tag = NULL,
@@ -48,7 +52,9 @@
 
     stopifnot(class(predx_object) == 'predx')
     stopifnot(is.logical(show_trend))
+    stopifnot(is.logical(show_calibration))
     stopifnot(any(class(cust_theme) == 'theme'))
+    stopifnot(is.numeric(line_size))
 
     if(predx_object$type %in% c('multi_class', 'binary')) {
 
@@ -83,14 +89,23 @@
 
     if(show_trend) {
 
-      reg_plot +
-        ggplot2::geom_smooth(method = trend_method, ...)
-
-    } else {
-
-      reg_plot
+      reg_plot <- reg_plot +
+        ggplot2::geom_smooth(method = trend_method,
+                             size = line_size, ...)
 
     }
+
+    if(show_calibration) {
+
+      reg_plot <- reg_plot +
+        ggplot2::geom_abline(intercept = 0,
+                             slope = 1,
+                             color = 'black',
+                             size = line_size)
+
+    }
+
+    reg_plot
 
   }
 

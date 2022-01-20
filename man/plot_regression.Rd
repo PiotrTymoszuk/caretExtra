@@ -16,6 +16,8 @@ plot_regression(
   point_alpha = 0.75,
   show_trend = TRUE,
   trend_method = "lm",
+  show_calibration = TRUE,
+  line_size = 0.5,
   plot_title = NULL,
   plot_subtitle = NULL,
   plot_tag = NULL,
@@ -45,6 +47,10 @@ plot_regression(
 \item{show_trend}{logical, should a trend line be displayed?}
 
 \item{trend_method}{a method for fitting the trend line, see \code{\link[ggplot2]{geom_smooth}} for details, defaults to 'lm'.}
+
+\item{show_calibration}{logical, should a line with slope 1 and intercept 1 be displayed in the plot?}
+
+\item{line_size}{size of the calibration or trend line.}
 
 \item{plot_title}{plot title.}
 

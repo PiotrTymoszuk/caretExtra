@@ -271,3 +271,62 @@
                 cust_theme = cust_theme, ...)
 
   }
+
+# Calibration -----
+
+#' Calibrate a caretx model.
+#'
+#' @description Enables post-hoc quantile GAM calibration of the ML predictions using the
+#' \code{\link[qgam]{qgam}} tool.
+#' @details Currently, only quantile calibration for regresison models is implemented. If a vector of
+#' quantiles is provided, the optimal one is choosen based on the maximum explained variance (more formal criteria
+#' are in development).
+#' @param caretx_model caretx model.
+#' @param newdata test data set.
+#' @param bs basis function for the smoother, ignored if a formula provided.
+#' @param k degrees of freedom for the smoother, ignored if a formula provided.
+#' @param qu quantile for the calibration, see: \code{\link[qgam]{qgam}} for details.
+#' @param form GAM formula as specified by \code{\link[mgcv]{formula.gam}}. The uncalibrated predictions
+#' are stored internally in the '.raw' variable, which needs to be included in the user-provided formula.
+#' @param lsig the value of the log learning rate used to create the Gibbs posterior,
+#' see: \code{\link[qgam]{qgam}} for details.
+#' @param err an upper bound on the error of the estimated quantile curve,
+#' see: \code{\link[qgam]{qgam}} for details.
+#' @param control a list of control parameters passed to \code{\link[qgam]{qgam}}.
+#' @param argGam  a list of parameters to be passed to \code{\link[mgcv]{gam}},
+#' with the exception of formula, family and data.
+#' @param ... extra arguments passed to \code{\link[qgam]{qgam}}.
+#' @return a list with the predx object (.raw stores the uncalibrated predctions, .fitted stores the calibrated predictions)
+#' along with the gamObject named cal_fit, the chosen quantile value (qu) and values of explained deviance (qu_tbl).
+#' @export calibration.caretx
+#' @export
+
+  calibration.caretx <- function(caretx_model,
+                                 newdata = NULL,
+                                 bs = 'cr',
+                                 k = 20,
+                                 qu = 0.5,
+                                 form = NULL,
+                                 lsig = NULL,
+                                 err = NULL,
+                                 control = list(link = 'identity'),
+                                 argGam = NULL, ...) {
+
+    ## entry control
+
+    if(caretx_model$modelType != 'Regression') stop('Calibration is currently implemented only for regression models.', call. = FALSE)
+
+    ## regression models
+
+    caretExtra:::calibrate_regression(caretx_model,
+                                      newdata = newdata,
+                                      bs = bs,
+                                      k = k,
+                                      qu = qu,
+                                      form = form,
+                                      lsig = lsig,
+                                      err = err,
+                                      control = control,
+                                      argGam = argGam, ...)
+
+  }

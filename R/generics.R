@@ -8,7 +8,7 @@
 
   extract <- function(x, ...) {
 
-    UseMethod('extract', x)
+    UseMethod('extract')
 
   }
 
@@ -20,7 +20,7 @@
 
   nobs <- function(x, ...) {
 
-    UseMethod('nobs', x)
+    UseMethod('nobs')
 
   }
 
@@ -32,6 +32,18 @@
 
   confusion <- function(x, ...) {
 
-    UseMethod('confusion', x)
+    UseMethod('confusion')
+
+  }
+
+#' Calibrate an object.
+#'
+#' @description S3 generic function for model calibration
+#' @return a method-specific object.
+#' @export
+
+  calibration <- function(x, ...) {
+
+    UseMethod('calibration')
 
   }

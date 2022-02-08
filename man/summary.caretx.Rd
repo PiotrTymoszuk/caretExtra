@@ -38,7 +38,8 @@ classification, only the accuracy and kappa are currently available.
 Harrell's C-index is calculated as specified for \code{\link[survival]{concordance}}. Unweighted Cohen's kappa
 is obtained as described for \code{\link[vcd]{Kappa}}. ROC is computed for prediction probabilities
 using \code{\link[caret]{twoClassSummary}}. Fit errors are based on working residuals and include mean absolute error (MAE),
-mean squared error (MSE) and root-MSE (RMSE). Pseudo R squared is calculated as 1 - MSE/Var(y). Pearson correlation is
+mean squared error (MSE) and root-MSE (RMSE). Pseudo R squared is calculated as 1 - MSE/Var(y). Caret R squared is calulated
+as root square of the Pearson correaltion coefficient between the fitted and observed values. Pearson correlation is
 obtained with \code{\link[base]{cor.test}}, Spearman correlation is computed with \code{\link[DescTools]{SpearmanRho}},
 Kendall's TauB is obtained with \code{\link[DescTools]{KendallTauB}}.\cr
 For cross-validation (CV) prediction, statistic values are calculated as mean across the CV with 95\% confidence intervals (CI).

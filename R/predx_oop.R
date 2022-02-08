@@ -274,8 +274,8 @@
       } else {
 
         roc_annotation <- paste0('AUC = ', signif(unlist(roc_annotation[1, 2]), signif_digits),
-                                 ', Se = ', signif(unlist(roc_annotation[2, 2]), signif_digits),
-                                 ', Sp = ', signif(unlist(roc_annotation[3, 2]), signif_digits))
+                                 '\nSe = ', signif(unlist(roc_annotation[2, 2]), signif_digits),
+                                 '\nSp = ', signif(unlist(roc_annotation[3, 2]), signif_digits))
 
       }
 

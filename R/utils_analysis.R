@@ -42,11 +42,15 @@
 
     stopifnot(all(c('.outcome', '.fitted') %in% names(data)))
 
-    tibble::tibble(statistic = c('MAE', 'MSE', 'RMSE', 'rsq'),
+    resamplCor <- try(stats::cor(data[['.outcome']], data[['.fitted']], use = 'pairwise.complete.obs'),
+                      silent = TRUE)
+
+    tibble::tibble(statistic = c('MAE', 'MSE', 'RMSE', 'rsq', 'caret_rsq'),
                    estimate = c(mean(abs(caretExtra:::get_resids(data))),
                                 mean(caretExtra:::get_resids(data)^2),
                                 sqrt(mean(caretExtra:::get_resids(data)^2)),
-                                1 - (mean(caretExtra:::get_resids(data)^2)/caretExtra:::get_var(data))),
+                                1 - (mean(caretExtra:::get_resids(data)^2)/caretExtra:::get_var(data)),
+                                resamplCor^2),
                    lower_ci = NA,
                    upper_ci = NA)
 

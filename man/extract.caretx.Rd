@@ -5,14 +5,14 @@
 \title{Extract features of caretx models.}
 \usage{
 \method{extract}{caretx}(
-  caretx_model,
+  x,
   newdata = NULL,
   what = c("data", "prediction", "fit", "n", "residuals", "confusion"),
   ...
 )
 }
 \arguments{
-\item{caretx_model}{caretx model.}
+\item{x}{caretx model.}
 
 \item{newdata}{newdata test data set.}
 

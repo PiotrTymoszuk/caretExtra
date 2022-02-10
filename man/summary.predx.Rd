@@ -4,14 +4,10 @@
 \alias{summary.predx}
 \title{Get the fit statistic summary of a predx object.}
 \usage{
-\method{summary}{predx}(
-  predx_object,
-  ci = FALSE,
-  cv_ci_method = c("percentile", "bca", "norm")
-)
+\method{summary}{predx}(object, ci = FALSE, cv_ci_method = c("percentile", "bca", "norm"))
 }
 \arguments{
-\item{predx_object}{an object of class 'predx_object' created e.g. by \code{\link{predict.caretx}}.}
+\item{object}{an object of class 'predx_object' created e.g. by \code{\link{predict.caretx}}.}
 
 \item{ci}{logical, should 95\% CI be calculated for non-CV predictions? ignored for CV prediction.}
 

@@ -4,14 +4,10 @@
 \alias{confusion.caretx}
 \title{Confusion matrix for binary and multi-class caretx models.}
 \usage{
-\method{confusion}{caretx}(
-  caretx_model,
-  newdata = NULL,
-  scale = c("none", "fraction", "percent")
-)
+\method{confusion}{caretx}(x, newdata = NULL, scale = c("none", "fraction", "percent"))
 }
 \arguments{
-\item{caretx_model}{caretx model.}
+\item{x}{caretx model.}
 
 \item{newdata}{newdata test data set.}
 

@@ -5,7 +5,7 @@
 \title{Plot diagnostic plots and predictions versus outcome for predx objects.}
 \usage{
 \method{plot}{predx}(
-  predx_object,
+  x,
   type = c("diagnostic", "fit", "regression", "roc", "confusion"),
   plot_title = NULL,
   plot_subtitle = NULL,
@@ -16,7 +16,7 @@
 )
 }
 \arguments{
-\item{predx_object}{an object of class 'predx_object' created e.g. by \code{\link{predict.caretx}}.}
+\item{x}{an object of class 'predx_object' created e.g. by \code{\link{predict.caretx}}.}
 
 \item{type}{type of the plot. 'diagnostic': diagnostic plots of residuals, 'fit': the fitted versus outcome plot
 specific for the prediction character (regression, ROC for binary classification and heat map of the confusion matrix

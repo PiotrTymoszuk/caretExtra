@@ -4,10 +4,10 @@
 \alias{residuals.caretx}
 \title{Extract working residuals from a caretx model.}
 \usage{
-\method{residuals}{caretx}(caretx_model, newdata = NULL)
+\method{residuals}{caretx}(object, newdata = NULL)
 }
 \arguments{
-\item{caretx_model}{caretx model.}
+\item{object}{caretx model.}
 
 \item{newdata}{test data set.}
 }

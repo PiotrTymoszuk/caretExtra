@@ -7,7 +7,7 @@
 #'
 #' @description predicts the outcome in train, cross-validation and, optionally, test data set.
 #' @details extends the output of \code{\link[caret]{predict.train}} method.
-#' @param caretx_model caretx model.
+#' @param object caretx model.
 #' @param newdata test data set.
 #' @param plain logical, should the results be coerced to a single data frame?
 #' @return a list of predx objects containing the predictions, model and data set type information
@@ -15,30 +15,30 @@
 #' @export predict.caretx
 #' @export
 
-  predict.caretx <- function(caretx_model, newdata = NULL, plain = FALSE) {
+  predict.caretx <- function(object, newdata = NULL, plain = FALSE) {
 
-    stopifnot(any(class(caretx_model) == 'caretx'))
+    stopifnot(is_caretx(object))
     stopifnot(is.logical(plain))
 
     if(is.null(newdata)) {
 
-      preds <- switch(caretx_model$modelType,
-                      Classification = list(train = caretExtra:::predict_class_train(caretx_model),
-                                            cv = caretExtra:::predict_class_cv(caretx_model),
+      preds <- switch(object$modelType,
+                      Classification = list(train = caretExtra:::predict_class_train(object),
+                                            cv = caretExtra:::predict_class_cv(object),
                                             test = NULL),
-                      Regression = list(train = caretExtra:::predict_reg_train(caretx_model),
-                                        cv = caretExtra:::predict_reg_cv(caretx_model),
+                      Regression = list(train = caretExtra:::predict_reg_train(object),
+                                        cv = caretExtra:::predict_reg_cv(object),
                                         test = NULL))
 
     } else {
 
-      preds <- switch(caretx_model$modelType,
-                      Classification = list(train = caretExtra:::predict_class_train(caretx_model),
-                                            cv = caretExtra:::predict_class_cv(caretx_model),
-                                            test = caretExtra:::predict_class_test(caretx_model, newdata = newdata)),
-                      Regression = list(train = caretExtra:::predict_reg_train(caretx_model),
-                                        cv = caretExtra:::predict_reg_cv(caretx_model),
-                                        test = caretExtra:::predict_reg_test(caretx_model, newdata = newdata)))
+      preds <- switch(object$modelType,
+                      Classification = list(train = caretExtra:::predict_class_train(object),
+                                            cv = caretExtra:::predict_class_cv(object),
+                                            test = caretExtra:::predict_class_test(object, newdata = newdata)),
+                      Regression = list(train = caretExtra:::predict_reg_train(object),
+                                        cv = caretExtra:::predict_reg_cv(object),
+                                        test = caretExtra:::predict_reg_test(object, newdata = newdata)))
 
     }
 
@@ -74,7 +74,7 @@
 #' Kendall's TauB is obtained with \code{\link[DescTools]{KendallTauB}}.\cr
 #' For cross-validation (CV) prediction, statistic values are calculated as mean across the CV with 95\% confidence intervals (CI).
 #' For non-CV predictions, 95\% CI are obtained as an option by the specific downstream functions.
-#' @param caretx_model caretx model.
+#' @param object caretx model.
 #' @param newdata test data set.
 #' @param ci logical, should 95\% CI be calculated for non-CV predictions? ignored for CV prediction.
 #' @param cv_ci_method method used for calculation of 95\% CI for the CV folds: normal distribution, percentile
@@ -84,16 +84,16 @@
 #' @export summary.caretx
 #' @export
 
-  summary.caretx <- function(caretx_model,
+  summary.caretx <- function(object,
                              newdata = NULL,
                              ci = FALSE,
                              cv_ci_method = c('percentile', 'bca', 'norm'),
                              plain = FALSE) {
 
-    stopifnot(any(class(caretx_model) == 'caretx'))
+    stopifnot(is_caretx(object))
     stopifnot(is.logical(plain))
 
-    preds <- predict(caretx_model,
+    preds <- predict(object,
                      newdata = newdata,
                      plain = FALSE)
 
@@ -121,15 +121,15 @@
 #' Number of complete observations in a caretx model.
 #'
 #' @description The number of complete observations.
-#' @param caretx_model caretx model.
+#' @param x caretx model.
 #' @return number of complete cases used for modeling.
 #' @export
 
-  nobs.caretx <- function(caretx_model) {
+  nobs.caretx <- function(x) {
 
-    stopifnot(any(class(caretx_model) == 'caretx'))
+    stopifnot(is_caretx(x))
 
-    nrow(caretx_model$trainingData)
+    nrow(x$trainingData)
 
   }
 
@@ -140,16 +140,16 @@
 #' In addition, squared and standardized residuals are returned along with
 #' expected normal distribution values for the standardized residuals and the true outcome.
 #' Potential outliers are identified by the two-SD criterion.
-#' @param caretx_model caretx model.
+#' @param object caretx model.
 #' @param newdata test data set.
 #' @return a list of data frames with residuals and potential outliers.
 #' @export
 
-  residuals.caretx <- function(caretx_model, newdata = NULL) {
+  residuals.caretx <- function(object, newdata = NULL) {
 
-    stopifnot(any(class(caretx_model) == 'caretx'))
+    stopifnot(is_caretx(object))
 
-    preds <- predict(caretx_model,
+    preds <- predict(object,
                      newdata = newdata,
                      plain = FALSE)
 
@@ -162,20 +162,20 @@
 #' Confusion matrix for binary and multi-class caretx models.
 #'
 #' @description Creates a confusion matrix, valid only for binary and multi-class predictions.
-#' @param caretx_model caretx model.
+#' @param x caretx model.
 #' @param newdata newdata test data set.
 #' @param scale indicates, how the table is to be scales. 'none' returns the counts, 'fraction' returns the fraction
 #' of all observations, 'percent' returns the percent of all observations. Defaults to 'none'.
 #' @return a list of table object storing the confusion matrices. For regression models NULL and a warning is generated.
 #' @export
 
-  confusion.caretx <- function(caretx_model, newdata = NULL, scale = c('none', 'fraction', 'percent')) {
+  confusion.caretx <- function(x, newdata = NULL, scale = c('none', 'fraction', 'percent')) {
 
-    stopifnot(any(class(caretx_model) == 'caretx'))
+    stopifnot(is_caretx(x))
 
     scale <- match.arg(scale[1], c('none', 'fraction', 'percent'))
 
-    preds <- predict(caretx_model,
+    preds <- predict(x,
                      newdata = newdata,
                      plain = FALSE)
 
@@ -188,7 +188,7 @@
 #' Extract features of caretx models.
 #'
 #' @description a handy extractor function enabling access to the data, predictions, number of observations and fit summary.
-#' @param caretx_model caretx model.
+#' @param x caretx model.
 #' @param what name of the requested feature.
 #' @param newdata newdata test data set.
 #' @param ... additional arguments passed to the specific methods.
@@ -199,21 +199,21 @@
 #' @export extract.caretx
 #' @export
 
-  extract.caretx <- function(caretx_model,
+  extract.caretx <- function(x,
                              newdata = NULL,
                              what = c('data', 'prediction', 'fit', 'n', 'residuals', 'confusion'), ...) {
 
-    stopifnot(any(class(caretx_model) == 'caretx'))
+    stopifnot(is_caretx(x))
 
-    what <- match.arg(what[1], c('data', 'prediction', 'fit', 'n', 'residuals'))
+    what <- match.arg(what[1], c('data', 'prediction', 'fit', 'n', 'residuals', 'confusion'))
 
     switch(what,
-           data = caretx_model$trainingData,
-           prediction = predict(caretx_model, newdata = newdata, ...),
-           fit = summary(caretx_model, newdata = newdata, ...),
-           n = nobs(caretx_model),
-           residuals = residuals(caretx_model, newdata = newdata),
-           confusion = confusion(caretx_model, newdata = newdata))
+           data = x$trainingData,
+           prediction = predict(x, newdata = newdata, ...),
+           fit = summary(x, newdata = newdata, ...),
+           n = nobs(x),
+           residuals = residuals(x, newdata = newdata),
+           confusion = confusion(x, newdata = newdata))
 
   }
 
@@ -223,7 +223,7 @@
 #'
 #' @description Generates diagnostic plots of residuals or plots of fitted versis outcome
 #' as appropriate for the particular prediction type and displays prediction type-specific analysis results.
-#' @param caretx_model a caretxmodel.
+#' @param x a caretxmodel.
 #' @param newdata test data set.
 #' @param type type of the plot. 'diagnostic': diagnostic plots of residuals, 'fit': the fitted versus outcome plot
 #' specific for the prediction character (regression, ROC for binary classification and heat map of the confusion matrix
@@ -239,16 +239,16 @@
 #' @export plot.caretx
 #' @export
 
-  plot.caretx <- function(caretx_model,
+  plot.caretx <- function(x,
                           newdata = NULL,
                           type = c('diagnostic', 'fit', 'regression', 'roc', 'confusion'),
                           plot_title = NULL,
                           signif_digits = 2,
                           cust_theme = ggplot2::theme_classic(), ...) {
 
-    stopifnot(any(class(caretx_model) == 'caretx'))
+    stopifnot(is_caretx(x))
 
-    preds <- predict(caretx_model,
+    preds <- predict(x,
                      newdata = newdata,
                      plain = FALSE)
 
@@ -256,12 +256,12 @@
 
     if(!is.null(plot_title)) {
 
-      plot_list <- list(predx_object = preds,
+      plot_list <- list(x = preds,
                         plot_title = plot_title)
 
     } else {
 
-      plot_list <- list(predx_object = preds)
+      plot_list <- list(x = preds)
 
     }
 
@@ -282,7 +282,7 @@
 #' @details Currently, only quantile calibration for regresison models is implemented. If a vector of
 #' quantiles is provided, the optimal one is choosen based on the maximum explained variance (more formal criteria
 #' are in development).
-#' @param caretx_model caretx model.
+#' @param x caretx model.
 #' @param newdata test data set.
 #' @param bs basis function for the smoother, ignored if a formula provided.
 #' @param k degrees of freedom for the smoother, ignored if a formula provided.
@@ -302,7 +302,7 @@
 #' @export calibration.caretx
 #' @export
 
-  calibration.caretx <- function(caretx_model,
+  calibration.caretx <- function(x,
                                  newdata = NULL,
                                  bs = 'cr',
                                  k = 20,
@@ -315,11 +315,13 @@
 
     ## entry control
 
-    if(caretx_model$modelType != 'Regression') stop('Calibration is currently implemented only for regression models.', call. = FALSE)
+    stopifnot(is_caretx(x))
+
+    if(x$modelType != 'Regression') stop('Calibration is currently implemented only for regression models.', call. = FALSE)
 
     ## regression models
 
-    caretExtra:::calibrate_regression(caretx_model,
+    caretExtra:::calibrate_regression(x,
                                       newdata = newdata,
                                       bs = bs,
                                       k = k,

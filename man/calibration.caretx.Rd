@@ -5,7 +5,7 @@
 \title{Calibrate a caretx model.}
 \usage{
 \method{calibration}{caretx}(
-  caretx_model,
+  x,
   newdata = NULL,
   bs = "cr",
   k = 20,
@@ -19,7 +19,7 @@
 )
 }
 \arguments{
-\item{caretx_model}{caretx model.}
+\item{x}{caretx model.}
 
 \item{newdata}{test data set.}
 

@@ -4,10 +4,10 @@
 \alias{nobs.caretx}
 \title{Number of complete observations in a caretx model.}
 \usage{
-\method{nobs}{caretx}(caretx_model)
+\method{nobs}{caretx}(x)
 }
 \arguments{
-\item{caretx_model}{caretx model.}
+\item{x}{caretx model.}
 }
 \value{
 number of complete cases used for modeling.

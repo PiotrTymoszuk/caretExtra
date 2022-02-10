@@ -5,7 +5,7 @@
 \title{Calibrate ML predictions.}
 \usage{
 \method{calibration}{predx}(
-  predx_object,
+  x,
   bs = "cr",
   k = 20,
   qu = 0.5,
@@ -18,7 +18,7 @@
 )
 }
 \arguments{
-\item{predx_object}{an object of class 'predx_object' created e.g. by \code{\link{predict.caretx}}.}
+\item{x}{an object of class 'predx_object' created e.g. by \code{\link{predict.caretx}}.}
 
 \item{bs}{basis function for the smoother, ignored if a formula provided.}
 

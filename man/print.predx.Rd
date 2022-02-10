@@ -4,10 +4,10 @@
 \alias{print.predx}
 \title{Print a predx object.}
 \usage{
-\method{print}{predx}(predx_object)
+\method{print}{predx}(x, ...)
 }
 \arguments{
-\item{predx_object}{an object of class 'predx_object' created e.g. by \code{\link{predict.caretx}}.}
+\item{x}{an object of class 'predx_object' created e.g. by \code{\link{predict.caretx}}.}
 }
 \value{
 nothing, called for its side effects.

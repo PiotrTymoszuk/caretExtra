@@ -89,6 +89,20 @@
 
   }
 
+#' Check the caretx class.
+#'
+#' @description Checks if the model is an instance of the caretx class.
+#' @param x an object.
+#' @return A logical value.
+#' @export
+
+  is_caretx <- function(x) {
+
+    any(class(x) == 'caretx')
+
+  }
+
+
 # predx class -----
 
 #' Create a predx object.
@@ -117,5 +131,18 @@
                    type = type,
                    prediction = prediction),
               class = 'predx')
+
+  }
+
+#' Check the predx class.
+#'
+#' @description Checks if the model is an instance of the predx class.
+#' @param x an object.
+#' @return A logical value.
+#' @export
+
+  is_predx <- function(x) {
+
+    any(class(x) == 'predx')
 
   }

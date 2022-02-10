@@ -4,10 +4,10 @@
 \alias{nobs.predx}
 \title{Number of complete observations in a predx object}
 \usage{
-\method{nobs}{predx}(predx_object)
+\method{nobs}{predx}(x, ...)
 }
 \arguments{
-\item{predx_object}{an object of class 'predx_object' created e.g. by \code{\link{predict.caretx}}.}
+\item{x}{an object of class 'predx_object' created e.g. by \code{\link{predict.caretx}}.}
 }
 \value{
 number of complete cases used for modeling.

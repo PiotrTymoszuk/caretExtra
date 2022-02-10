@@ -4,10 +4,10 @@
 \alias{residuals.predx}
 \title{Extract working residuals from a predx object.}
 \usage{
-\method{residuals}{predx}(predx_object)
+\method{residuals}{predx}(object, ...)
 }
 \arguments{
-\item{predx_object}{an object of class 'predx_object' created e.g. by \code{\link{predict.caretx}}.}
+\item{object}{an object of class 'predx_object' created e.g. by \code{\link{predict.caretx}}.}
 }
 \value{
 a data frame with residuals.

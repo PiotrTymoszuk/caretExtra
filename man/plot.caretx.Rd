@@ -5,7 +5,7 @@
 \title{Plot diagnostic plots and predictions versus outcome for caretx models.}
 \usage{
 \method{plot}{caretx}(
-  caretx_model,
+  x,
   newdata = NULL,
   type = c("diagnostic", "fit", "regression", "roc", "confusion"),
   plot_title = NULL,
@@ -15,7 +15,7 @@
 )
 }
 \arguments{
-\item{caretx_model}{a caretxmodel.}
+\item{x}{a caretxmodel.}
 
 \item{newdata}{test data set.}
 

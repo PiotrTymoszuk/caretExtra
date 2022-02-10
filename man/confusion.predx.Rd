@@ -4,10 +4,10 @@
 \alias{confusion.predx}
 \title{Confusion matrix for binary and multi-class predx objects.}
 \usage{
-\method{confusion}{predx}(predx_object, scale = c("none", "fraction", "percent"))
+\method{confusion}{predx}(x, scale = c("none", "fraction", "percent"))
 }
 \arguments{
-\item{predx_object}{an object of class 'predx_object' created e.g. by \code{\link{predict.caretx}}.}
+\item{x}{an object of class 'predx_object' created e.g. by \code{\link{predict.caretx}}.}
 
 \item{scale}{indicates, how the table is to be scales. 'none' returns the counts, 'fraction' returns the fraction
 of all observations, 'percent' returns the percent of all observations. Defaults to 'none'.}

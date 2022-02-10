@@ -5,12 +5,13 @@
 \title{Extract features of predx objects.}
 \usage{
 \method{extract}{predx}(
-  predx_object,
-  what = c("data", "prediction", "classes", "fit", "n", "residuals", "confusion")
+  x,
+  what = c("data", "prediction", "classes", "fit", "n", "residuals", "confusion"),
+  ...
 )
 }
 \arguments{
-\item{predx_object}{an object of class 'predx_object' created e.g. by \code{\link{predict.caretx}}.}
+\item{x}{an object of class 'predx_object' created e.g. by \code{\link{predict.caretx}}.}
 
 \item{what}{name of the requested feature.}
 }

@@ -5,7 +5,7 @@
 \title{Get the fit statistic summary of a caretx object.}
 \usage{
 \method{summary}{caretx}(
-  caretx_model,
+  object,
   newdata = NULL,
   ci = FALSE,
   cv_ci_method = c("percentile", "bca", "norm"),
@@ -13,7 +13,7 @@
 )
 }
 \arguments{
-\item{caretx_model}{caretx model.}
+\item{object}{caretx model.}
 
 \item{newdata}{test data set.}
 

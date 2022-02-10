@@ -4,10 +4,10 @@
 \alias{predict.caretx}
 \title{Predict the outcome for a caretx model.}
 \usage{
-\method{predict}{caretx}(caretx_model, newdata = NULL, plain = FALSE)
+\method{predict}{caretx}(object, newdata = NULL, plain = FALSE)
 }
 \arguments{
-\item{caretx_model}{caretx model.}
+\item{object}{caretx model.}
 
 \item{newdata}{test data set.}
 

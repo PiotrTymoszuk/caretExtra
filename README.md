@@ -1,3 +1,5 @@
+[![R](https://github.com/PiotrTymoszuk/caretExtra/actions/workflows/r.yml/badge.svg)](https://github.com/PiotrTymoszuk/caretExtra/actions/workflows/r.yml)
+
 <img src="https://github.com/PiotrTymoszuk/caretExtra/assets/80723424/e5fc7557-ece3-4e38-ac16-b3bf97d1be6a" width="20%" height="20%" align = "right">
 
 # caretExtra

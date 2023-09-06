@@ -1,30 +1,32 @@
 Package: caretExtra
 Type: Package
-Title: Extra functionality for predictions and quality control of caret models.
-Version: 0.1.0
-Description: Provides tools for user-friendly prediction of outcome in training, cross-validation
-    and test data, plotting the prediction results and calculation of error statistics.
-License: GPL 3
+Title: Extra functionality for predictions and quality control of caret models
+Version: 1.1.0
+Description: Tools for user-friendly prediction of outcome in training, 
+    cross-validation and test data, plotting the prediction results and 
+    calculation of error statistics.
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Authors@R: 
-    person("Piotr", "Tymoszuk", , "piotr.s.tymoszuk@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0002-0398-6034"))
+    person("Piotr", "Tymoszuk", , "piotr.s.tymoszuk@gmail.com", 
+    role = c("aut", "cre"), comment = c(ORCID = "0000-0002-0398-6034"))
 Imports: 
     coxed,
     DescTools,
-    dplyr,
-    ggplot2,
-    mgcv,
+    ggrepel,
     plotROC,
-    plyr,
-    purrr,
     qgam,
-    rlang,
-    stringi,
-    survival,
-    tibble,
-    vcd
+    survival
 Depends: 
-    caret
-RoxygenNote: 7.1.1
+    caret,
+    clustTools,
+    dplyr,
+    generics,
+    ggplot2,
+    purrr,
+    rlang,
+    stats,
+    tibble
+RoxygenNote: 7.2.3
+Roxygen: list(markdown = TRUE)

@@ -89,7 +89,7 @@
            formula = formula(object),
            resamples = object$resamples,
            tuning = object$results,
-           best_tune = object$best_tune,
+           best_tune = object$bestTune,
            prediction = predict(object, newdata = newdata, ...),
            probability = classp(object, newdata = newdata, ...),
            square_dist = squared(object, newdata = newdata, ...),
@@ -463,7 +463,8 @@
 
       outcomes_num <-
         as.data.frame(DescTools::Dummy(pred_data[['.outcome']],
-                                       method = 'full'))
+                                       method = 'full',
+                                       levels = x$classes))
 
       fitted_num <- pred_data[x$classes]
 

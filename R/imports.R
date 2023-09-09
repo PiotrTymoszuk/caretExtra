@@ -1,6 +1,7 @@
 # Managing imports from dependencies
 
 #' @importFrom generics components
+#' @importFrom generics augment
 #'
 #' @importFrom caret calibration
 #' @importFrom caret predict.train

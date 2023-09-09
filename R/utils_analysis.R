@@ -84,12 +84,19 @@
 
     correlations <- purrr::transpose(correlations)$result
 
-    correlations$pearson <- c(rho = correlations$pearson$estimate,
-                              lwr.ci = correlations$pearson$conf.int[1],
-                              lwr.ci = correlations$pearson$conf.int[2])
+    if(!is.null(correlations$pearson)) {
 
-    correlations <-
-      map(correlations, function(x) if(is.null(x)) c(NA, NA, NA) else x)
+      correlations$pearson <- c(rho = correlations$pearson$estimate,
+                                lwr.ci = correlations$pearson$conf.int[1],
+                                lwr.ci = correlations$pearson$conf.int[2])
+
+    } else {
+
+      correlations$pearson <- c(rho = NA,
+                                lwr.ci = NA,
+                                lwr.ci = NA)
+
+    }
 
     map2_dfr(correlations,
              names(correlations),
@@ -475,6 +482,14 @@
     ci_method <- match.arg(ci_method[1], c('percentile', 'bca', 'norm'))
 
     splits <- split(data, factor(data[['.resample']]))
+
+    ## eliminating splits with single observations
+    ## no stats can be computed for them
+
+    splits <- map(splits,
+                  function(x) if(nrow(x) > 1) x else NULL)
+
+    splits <- compact(splits)
 
     split_stats <- map(splits, fun, ...)
 

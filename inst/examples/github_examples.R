@@ -379,6 +379,22 @@
   regression_chas[c("cv.no", "cv.yes")] %>%
     map(plot, type = 'fit')
 
+# Class stats ---------
+
+  clstats(my_models$multi_class)
+
+  class_roc_plots <- clplots(my_models$multi_class,
+                             newdata = my_wines$test) %>%
+    map2(., c('Wines: training', 'Wines: CV', 'Wines: test'),
+         ~.x +
+           labs(title = .y) +
+           theme(legend.position = 'bottom'))
+
+  class_roc_plots$train +
+    class_roc_plots$cv +
+    class_roc_plots$test +
+    plot_layout(ncol = 2)
+
 # Variable importance -------
 
   my_importance <- my_models %>%

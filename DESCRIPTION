@@ -17,6 +17,7 @@ Imports:
     ggrepel,
     plotROC,
     qgam,
+    scales,
     stringi,
     survival
 Depends: 

@@ -1,5 +1,7 @@
 # computation of numeric metrics of the class identification quality.
 
+# Numeric stats -------
+
 #' Class detection quality.
 #'
 #' @description
@@ -34,7 +36,7 @@
 #' receiver-operator characteristic as well as class-specific Brier scores
 #' and average class assignment probabilities.
 #' For `caretx` a list of such data frames, each one for the train, resample
-#' and train data set.
+#' and, it `newdata` is specified, the training data set.
 #'
 #' @export
 
@@ -76,6 +78,58 @@
     preds <- predict(x, newdata = newdata, ...)
 
     map(compact(preds), clstats)
+
+  }
+
+# Class ROC plots --------
+
+#' Receiver operating characteristic plots for outcome classes.
+#'
+#' @description
+#' Draws receiver operating characteristic (ROC) plots for particular outcome
+#' classes. The ROC statistics for particular classes are obtained by comparing
+#' the given class the remaining ones (one versus rest comparison).
+#'
+#' @details
+#' The function employs internally \code{\link[caret]{multiClassSummary}} and
+#' plotting tools from the `plotROC` package. `clplots` is a S3 generic
+#' function.
+#'
+#' @param one_plot logical: should all ROC curves be displayed in one plot?
+#' @param ... extra arguments passed to \code{\link{plot_class_roc}}.
+#' @inheritParams clstats
+#'
+#' @return a single `ggplot` object or a list of `ggplot` objects.
+#' For `clplots.caretex` a list of `ggplots` with plots for the training data,
+#' resamples and, if `newdata` is specified, also for the test data set.
+#'
+#' @export clplots
+
+  clplots <- function(x, ...) UseMethod('clplots')
+
+#' @rdname clplots
+#' @export clplots.predx
+#' @export
+
+  clplots.predx <- function(x, one_plot = TRUE, ...) {
+
+    plot_class_roc(x, one_plot = one_plot, ...)
+
+  }
+
+#' @rdname clplots
+#' @export clplots.caretx
+#' @export
+
+  clplots.caretx <- function(x,
+                             newdata = NULL,
+                             one_plot = TRUE, ...) {
+
+    stopifnot(is_caretx(x))
+
+    preds <- compact(predict(x, newdata = newdata))
+
+    map(preds, clplots, one_plot = one_plot, ...)
 
   }
 

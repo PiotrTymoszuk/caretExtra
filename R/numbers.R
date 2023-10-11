@@ -72,7 +72,10 @@
 
     ## Number of observations -----
 
-    pred_data <- components(x, 'data')
+    .observation <- NULL
+
+    pred_data <- filter(components(x, 'data'),
+                        !duplicated(.observation))
 
     classes <- c('.fitted' = '.fitted',
                  '.outcome' = '.outcome')

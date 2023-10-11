@@ -57,7 +57,7 @@ mean squared error (MSE) and root-MSE (RMSE).
 Pseudo R squared is calculated as 1 - MSE/Var(y).
 Pearson correlation is obtained with \code{\link[stats]{cor.test}},
 Spearman correlation is computed with \code{\link[DescTools]{SpearmanRho}},
-Kendall's TauB is obtained with \code{\link[DescTools]{KendallTauB}}.
+Kendall's TauB is obtained with \code{\link[stats]{cor}}.
 For cross-validation (CV) prediction, statistic values are calculated as
 mean across the CV with 95\\% confidence intervals (CI).
 For multi-class predictions and models, statistics referring to

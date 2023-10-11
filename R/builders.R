@@ -35,6 +35,8 @@
 
   caretx <- function(caret_model) {
 
+    if(is_caretx(caret_model)) return(caret_model)
+
     ## user entry control -------
 
     if(is.null(caret_model$trainingData)) {
@@ -171,7 +173,7 @@
 
   is_predx <- function(x) {
 
-    any(class(x) == 'predx')
+    inherits(x, 'predx')
 
   }
 

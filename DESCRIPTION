@@ -1,7 +1,7 @@
 Package: caretExtra
 Type: Package
 Title: Extra functionality for predictions and quality control of caret models
-Version: 1.1.1
+Version: 1.1.2
 Description: Tools for user-friendly prediction of outcome in training, 
     cross-validation and test data, plotting the prediction results and 
     calculation of error statistics.

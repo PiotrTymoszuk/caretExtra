@@ -78,14 +78,14 @@
 #'
 #' @description
 #' The `augment()` method for \code{\link{caretx}} objects derives the
-#' predictions for the training, resample (CV), and, optionally, training
+#' predictions for the training, resample (CV), and, optionally, test
 #' data set appended with the explanatory variables.
 #'
 #' @param x a \code{\link{caretx}} object.
 #' @param newdata an optional data frame with the test data.
 #' @param ... extra arguments, currently none.
 #'
-#' @return alist of data frames. Each of them contains the
+#' @return a list of data frames. Each of them contains the
 #' observation number (`.observation`),
 #' resample ID (only for resample/CV, `.resample`),
 #' outcome (`.outcome`), fitted values/classes (`.fitted`).

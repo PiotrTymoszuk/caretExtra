@@ -45,7 +45,7 @@
 
     resamplCor <-
       try(stats::cor(data[['.outcome']], data[['.fitted']],
-                        use = 'pairwise.complete.obs'),
+                     use = 'pairwise.complete.obs'),
           silent = TRUE)
 
     resids <- get_resids(data)
@@ -77,7 +77,7 @@
     correlations <-
       list(pearson = function(x, y) stats::cor.test(x, y, method = 'pearson', conf.level = 0.95),
            spearman = function(x, y) DescTools::SpearmanRho(x, y, conf.level = if(ci) 0.95 else NA),
-           kendall = function(x, y) DescTools::KendallTauB(x, y, conf.level = if(ci) 0.95 else NA))
+           kendall = function(x, y) c(stats::cor(x, y, method = 'kendall'), NA, NA))
 
     correlations <- map(correlations,
                         ~safely(.x)(data[['.outcome']], data[['.fitted']]))

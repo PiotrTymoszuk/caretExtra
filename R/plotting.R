@@ -180,7 +180,7 @@
                  ', R\u00B2 = ', signif(unlist(stats[4, 2]),
                                         signif_digits))
 
-      } else {
+      } else if(x$type == 'binary') {
 
         plot_subtitle <-
           paste0('Acc = ', signif(unlist(stats[5, 2]),
@@ -188,6 +188,16 @@
                  ', \u03BA = ', signif(unlist(stats[6, 2]),
                                        signif_digits),
                  ', BS = ', signif(unlist(stats[16, 2]),
+                                   signif_digits))
+
+      } else {
+
+        plot_subtitle <-
+          paste0('Acc = ', signif(unlist(stats[5, 2]),
+                                  signif_digits),
+                 ', \u03BA = ', signif(unlist(stats[6, 2]),
+                                       signif_digits),
+                 ', BS = ', signif(unlist(stats[15, 2]),
                                    signif_digits))
 
       }

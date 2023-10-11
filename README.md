@@ -1019,6 +1019,57 @@ $cv.yes
 ```
 </details>
 
+### Quality of detection in outcome variable classes
+
+<details>
+In many cases it is worthwhile to check how a multi-category classification model performs in the outcome variable classes. ROC metrics for particular classes obtained by the one versus rest comparisons can be easily computed with `clstats()`. Additionally, by calling `clplots()` for a multi-class model, ROC plots for all classes of the response variable are generated. Both functions will return the statistics or plots in a list for the training and out-of-fold predictions. By providing a data frame to the `newdata` argument, the ROC metrics and plots will be returned for the test data set as well.
+
+```r
+> clstats(my_models$multi_class, newdata = my_wines$test)
+
+$train
+# A tibble: 3 × 14
+  .outcome   correct_rate kappa    F1    Se    Sp   PPV   NPV precision recall detection_rate balanced_accuracy  brier_score class_p
+  <fct>             <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>     <dbl>  <dbl>          <dbl>             <dbl>        <dbl>   <dbl>
+1 Barbera               1     1     1     1     1     1     1         1      1          0.269                 1 0.0000000177    1.00
+2 Barolo                1     1     1     1     1     1     1         1      1          0.328                 1 0.0000000177    1.00
+3 Grignolino            1     1     1     1     1     1     1         1      1          0.403                 1 0.00000772      1.00
+
+$cv
+# A tibble: 3 × 14
+  .outcome   correct_rate kappa    F1    Se    Sp   PPV   NPV precision recall detection_rate balanced_accuracy brier_score class_p
+  <fct>             <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>     <dbl>  <dbl>          <dbl>             <dbl>       <dbl>   <dbl>
+1 Barbera           0.988 0.970 0.979 1     0.984 0.958 1         0.958  1              0.269             0.992    0.000302   0.997
+2 Barolo            0.997 0.992 0.995 0.995 0.998 0.995 0.998     0.995  0.995          0.326             0.996    0.0103     0.988
+3 Grignolino        0.988 0.975 0.985 0.971 1     1     0.981     1      0.971          0.392             0.985    0.0501     0.977
+
+$test
+# A tibble: 3 × 14
+  .outcome   correct_rate kappa    F1    Se    Sp   PPV   NPV precision recall detection_rate balanced_accuracy brier_score class_p
+  <fct>             <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>     <dbl>  <dbl>          <dbl>             <dbl>       <dbl>   <dbl>
+1 Barbera           1     1     1     1     1      1    1          1     1              0.276             1        0.00531    0.986
+2 Barolo            0.983 0.961 0.974 1     0.974  0.95 1          0.95  1              0.328             0.987    0.000272   0.997
+3 Grignolino        0.983 0.964 0.978 0.957 1      1    0.972      1     0.957          0.379             0.978    0.0873     0.995
+
+```
+
+```r
+  class_roc_plots <- clplots(my_models$multi_class,
+                             newdata = my_wines$test) %>%
+    map2(., c('Wines: training', 'Wines: CV', 'Wines: test'),
+         ~.x +
+           labs(title = .y) +
+           theme(legend.position = 'bottom'))
+
+  class_roc_plots$train +
+    class_roc_plots$cv +
+    class_roc_plots$test +
+    plot_layout(ncol = 2)
+```
+![image](https://github.com/PiotrTymoszuk/caretExtra/assets/80723424/9aac3cf6-7ef4-424e-a29c-f940424d3fdd)
+  
+</details>
+
 ## References
 1. Kuhn M. Building predictive models in R using the caret package. J Stat Softw (2008) 28:1–26. doi:10.18637/jss.v028.i05
 2. Friedman JH. Greedy function approximation: A gradient boosting machine. https://doi.org/101214/aos/1013203451 (2001) 29:1189–1232. doi:10.1214/AOS/1013203451

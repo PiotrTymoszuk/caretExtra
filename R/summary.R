@@ -53,8 +53,11 @@
 #' @param newdata optional, a data frame with the test data.
 #' @param ci_method method used for calculation of 95\% CI for the CV folds:
 #' normal distribution, percentile or BCA (\code{\link[coxed]{bca}}).
-#' Defaults to 'percentile'.
-#' @param plain logical, should the output be coerced to a single data frame?
+#' Defaults to 'percentile'. Ignored if `wide = TRUE`.
+#' @param plain logical, should the output be coerced to a single data frame
+#' with performance stats for training, CV and, optionally, test data?
+#' @param wide logical, should the stats be presented in a wide format?
+#' If `TRUE`, no confidence intervals are displayed.
 #' @param ... extra arguments, currently none.
 #'
 #' @return a data frame with the fit summary statistic (`predx`) or
@@ -66,11 +69,14 @@
 
   summary.predx <- function(object,
                             ci_method = c('percentile', 'bca', 'norm'),
+                            wide = FALSE,
                             ...) {
 
     stopifnot(is_predx(object))
 
     ci_method <- match.arg(ci_method[1], c('percentile', 'bca', 'norm'))
+
+    stopifnot(is.logical(wide))
 
     data <- filter(object$data, complete.cases(object$data))
 
@@ -107,15 +113,22 @@
 
     }
 
-    if(!object$type %in% c('binary', 'multi_class')) {
+    if(object$type %in% c('binary', 'multi_class')) {
 
-      return(summ_object)
+      summ_object <- rbind(summ_object,
+                           get_brier(squared(object), ci_method = ci_method),
+                           get_classp(classp(object), ci_method = ci_method))
 
     }
 
-    rbind(summ_object,
-          get_brier(squared(object), ci_method = ci_method),
-          get_classp(classp(object), ci_method = ci_method))
+    if(!wide) return(summ_object)
+
+    summ_object <- column_to_rownames(summ_object[c('statistic', 'estimate')],
+                                      'statistic')
+
+    summ_object <- as.data.frame(t(summ_object))
+
+    as_tibble(summ_object)
 
   }
 
@@ -126,29 +139,34 @@
   summary.caretx <- function(object,
                              newdata = NULL,
                              ci_method = c('percentile', 'bca', 'norm'),
+                             wide = FALSE,
                              plain = FALSE, ...) {
 
     stopifnot(is_caretx(object))
     stopifnot(is.logical(plain))
+    stopifnot(is.logical(wide))
 
     preds <- predict(object,
                      newdata = newdata,
                      plain = FALSE)
 
     stats <- map(compact(preds),
-                 ~summary(.x,
-                          ci_method = ci_method))
+                 summary,
+                 ci_method = ci_method,
+                 wide = wide)
 
     if(plain) {
 
       prediction <- NULL
 
-      return(map2_dfr(stats, names(stats),
-                      ~mutate(.x, prediction = .y)))
+      stats <- map2_dfr(stats, names(stats),
+                        ~mutate(.x, prediction = .y))
+
+      stats <- dplyr::relocate(stats, prediction)
 
     }
 
-    return(stats)
+    stats
 
   }
 

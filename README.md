@@ -39,7 +39,7 @@ The package maintainer is [Piotr Tymoszuk](mailto:piotr.s.tymoszuk@gmail.com).
 
 ## Acknowledgements
 
-`clustTools` uses tools provided by the [rlang](https://rlang.r-lib.org/), [tidyverse](https://www.tidyverse.org/), [caret](https://topepo.github.io/caret/), [coxed](https://cran.r-project.org/web/packages/coxed/index.html), [ggrepel](https://ggrepel.slowkow.com/), [generics](https://github.com/r-lib/generics), [DescTools](https://andrisignorell.github.io/DescTools/), [plotROC](https://cran.r-project.org/web/packages/plotROC/vignettes/examples.html), [qgam](https://mfasiolo.github.io/qgam/), and [survial](https://cran.r-project.org/web/packages/survival/index.html). Many thanks to their developers, maintainers and contributors.
+`caretExtra` uses tools provided by the [rlang](https://rlang.r-lib.org/), [tidyverse](https://www.tidyverse.org/), [caret](https://topepo.github.io/caret/), [coxed](https://cran.r-project.org/web/packages/coxed/index.html), [ggrepel](https://ggrepel.slowkow.com/), [generics](https://github.com/r-lib/generics), [DescTools](https://andrisignorell.github.io/DescTools/), [plotROC](https://cran.r-project.org/web/packages/plotROC/vignettes/examples.html), [qgam](https://mfasiolo.github.io/qgam/), and [survial](https://cran.r-project.org/web/packages/survival/index.html). Many thanks to their developers, maintainers and contributors.
 
 ## Usage
 

@@ -11,6 +11,8 @@ The `caretExtra` package includes a bunch of methods for user friendly extractio
 
 Currently, it works only with cross-validated Caret models (CV or repreated CV) created from formula objects. Solution for bootstrap and holdout model construction methods are on the way.
 
+Some concepts of modeling, validatin and evaluation of models followed by the `caretExtra` package are presented in [a presentation](https://github.com/PiotrTymoszuk/caretExtra/blob/6b0b0bb461cd31dec92eecdad1b05a708682e1f0/inst/concepts/ml_workshop.pdf)
+
 ## Installation
 
 You may easily fetch the package and its dependencies `somKernels` and `clustTools` with `devtools`: 

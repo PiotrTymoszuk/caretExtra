@@ -2,8 +2,6 @@
 ^\.Rproj\.user$
 inst\examples
 inst\\logo
-^.*\.Rproj$
-^\.Rproj\.user$
-inst\examples
-inst\\logo
 inst\\concepts
+.github
+

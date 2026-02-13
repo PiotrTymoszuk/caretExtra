@@ -133,6 +133,7 @@
 #'
 #' @param data a data frame with predictions, the
 #' columns `.outcome` and `.fitted` are obligatory.
+#' @param x an object.
 #' @param classes an character vector with class names, required only
 #' for binary and multi-class classification models.
 #' @param type model type (`regression`, `binary` or `multi_class`).

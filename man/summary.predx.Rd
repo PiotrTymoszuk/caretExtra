@@ -21,7 +21,7 @@
 object.}
 
 \item{ci_method}{method used for calculation of 95\\% CI for the CV folds:
-normal distribution, percentile or BCA (\code{\link[coxed]{bca}}).
+normal distribution, percentile or BCA.
 Defaults to 'percentile'. Ignored if \code{wide = TRUE}.}
 
 \item{wide}{logical, should the stats be presented in a wide format?

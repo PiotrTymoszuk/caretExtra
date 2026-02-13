@@ -108,6 +108,7 @@
 #' @importFrom stats quantile
 #' @importFrom stats ppoints
 #' @importFrom stats as.formula
+#' @importFrom stats pnorm
 #'
 #' @importFrom survival concordance
 #'

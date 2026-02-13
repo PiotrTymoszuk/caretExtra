@@ -29,6 +29,8 @@ for binary and multi-class classification models.}
 \item{calibrator_fun}{optional and experimental, a function that takes the
 data frame provided as \code{data} argument and returns calibrated predictions in
 a data frame with the same format as \code{data}.}
+
+\item{x}{an object.}
 }
 \value{
 a \code{predx} object; \code{is_predx()} returns a logical value.

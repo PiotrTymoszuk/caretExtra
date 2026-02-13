@@ -52,7 +52,7 @@
 #' object.
 #' @param newdata optional, a data frame with the test data.
 #' @param ci_method method used for calculation of 95\% CI for the CV folds:
-#' normal distribution, percentile or BCA (\code{\link[coxed]{bca}}).
+#' normal distribution, percentile or BCA.
 #' Defaults to 'percentile'. Ignored if `wide = TRUE`.
 #' @param plain logical, should the output be coerced to a single data frame
 #' with performance stats for training, CV and, optionally, test data?

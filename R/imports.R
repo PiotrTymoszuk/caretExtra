@@ -67,6 +67,7 @@
 #' @importFrom rlang `!!`
 #' @importFrom rlang `!!!`
 #' @importFrom rlang is_formula
+#' @importFrom rlang is_function
 #' @importFrom rlang as_string
 #' @importFrom rlang ensym
 #'
@@ -99,6 +100,7 @@
 #' @importFrom qgam qgam
 #'
 #' @importFrom stringi stri_replace
+#' @importFrom stringi stri_detect
 #'
 #' @importFrom stats var
 #' @importFrom stats cor

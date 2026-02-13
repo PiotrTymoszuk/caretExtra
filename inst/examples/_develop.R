@@ -12,12 +12,12 @@
   ## trainControl object specified as required for `caretx` objects
 
   testControl <- trainControl(method = 'repeatedcv',
-                                     number = 10,
-                                     repeats = 5,
-                                     returnData = TRUE,
-                                     returnResamp = 'final',
-                                     savePredictions = 'final',
-                                     classProbs = TRUE)
+                              number = 10,
+                              repeats = 5,
+                              returnData = TRUE,
+                              returnResamp = 'final',
+                              savePredictions = 'final',
+                              classProbs = TRUE)
 
   ## testing data for binary classification models
 
@@ -96,17 +96,24 @@
 
   caretx_class <- caretx(class_model)
 
-  caretx_corr <- caretx(corr_models)
+  caretx_corr <- caretx(corr_model)
 
-  caretx_multi <- caretx(multi_models)
+  caretx_multi <- caretx(multi_model)
 
-  ## predictions, predx objects
+  ## predictions, predx objects, alternatively with observations
+  ## collapsed by arithmetic mean
 
   test_class_pred <- predict(caretx_class, newdata = testClass)
 
+  test_class_pred <- collapse_cv(caretx_class, newdata = testClass)
+
   test_corr_pred <- predict(caretx_corr, newdata = testCorr)
 
+  test_corr_pred <- collapse_cv(caretx_corr, newdata = testCorr)
+
   test_multi_pred <- predict(caretx_multi, newdata = testMulti)
+
+  test_multi_pred <- collapse_cv(caretx_multi, newdata = testMulti)
 
   ## prediction, caretx models
 
@@ -120,9 +127,9 @@
 
   summary(test_class_pred$cv, ci_method = 'bca')
 
-  summary(test_corr_pred$cv, ci_method = 'percentile')
+  summary(test_corr_pred$cv, ci_method = 'bca')
 
-  summary(test_multi_pred$cv, ci_method = 'norm')
+  summary(test_multi_pred$cv, ci_method = 'bca')
 
   ## summary, caretx models
 

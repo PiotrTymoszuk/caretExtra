@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_plotting.R
 \name{plot_performance}
 \alias{plot_performance}
-\title{Plots of performance metrics in the training, resample and test data.}
+\title{Plots of performance metrics in the training, re-sample and test data.}
 \usage{
 plot_performance(
   caretx_object,
@@ -11,7 +11,7 @@ plot_performance(
   plot_tag = NULL,
   show_txt = FALSE,
   txt_size = 2.75,
-  cust_theme = ggplot2::theme_classic(),
+  cust_theme = theme_classic(),
   ...
 )
 }
@@ -34,11 +34,11 @@ be displayed in the plot?}
 \item{...}{extra arguments passed to \code{\link[ggrepel]{geom_text_repel}}}
 }
 \value{
-a ggplot graphic.
+a \code{ggplot} graphic.
 }
 \description{
 This internally utilized function takes a \code{caretx} model and plots selected
-performance stats appropriate for the prediction type in the test, resample
+performance stats appropriate for the prediction type in the test, re-sample
 and, optionally, training data set.
 Scatter plots are generated, the data set type is color-coded and,
 optionally, indicated in the plot.

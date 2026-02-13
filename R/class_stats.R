@@ -35,7 +35,7 @@
 #' @return For `predx` objects: a data frame with class-specific
 #' receiver-operator characteristic as well as class-specific Brier scores
 #' and average class assignment probabilities.
-#' For `caretx` a list of such data frames, each one for the train, resample
+#' For `caretx` a list of such data frames, each one for the train, re-sample
 #' and, it `newdata` is specified, the training data set.
 #'
 #' @export
@@ -95,13 +95,15 @@
 #' plotting tools from the `plotROC` package. `clplots` is a S3 generic
 #' function.
 #'
+#' @param x a \code{\link{predx}} prediction object or a \code{\link{caretx}}
+#' model.
 #' @param one_plot logical: should all ROC curves be displayed in one plot?
 #' @param ... extra arguments passed to \code{\link{plot_class_roc}}.
 #' @inheritParams clstats
 #'
 #' @return a single `ggplot` object or a list of `ggplot` objects.
 #' For `clplots.caretex` a list of `ggplots` with plots for the training data,
-#' resamples and, if `newdata` is specified, also for the test data set.
+#' re-samples and, if `newdata` is specified, also for the test data set.
 #'
 #' @export clplots
 

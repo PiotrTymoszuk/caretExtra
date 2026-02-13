@@ -24,7 +24,7 @@ model.}
 For \code{predx} objects: a data frame with class-specific
 receiver-operator characteristic as well as class-specific Brier scores
 and average class assignment probabilities.
-For \code{caretx} a list of such data frames, each one for the train, resample
+For \code{caretx} a list of such data frames, each one for the train, re-sample
 and, it \code{newdata} is specified, the training data set.
 }
 \description{

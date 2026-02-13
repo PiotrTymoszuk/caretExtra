@@ -6,7 +6,7 @@
 #' Calculate expected normal values for the given variable.
 #'
 #' @description
-#' Calclate expected values from the normal distribution.
+#' Calculate expected values from the normal distribution.
 #'
 #'
 #' @param data data frame.
@@ -24,7 +24,7 @@
     .expect.norm <- NULL
 
     mutate(data[order(data[[observed]]), ],
-           .expect.norm = stats::qnorm(stats::ppoints(nrow(data))))
+           .expect.norm = qnorm(ppoints(nrow(data))))
 
   }
 
@@ -68,7 +68,7 @@
                           point_alpha = 0.75,
                           smooth = TRUE,
                           silent = TRUE,
-                          cust_theme = ggplot2::theme_classic(), ...) {
+                          cust_theme = theme_classic(), ...) {
 
     ## table for plotting
 
@@ -91,18 +91,18 @@
                          aes(x = .data[[x_var]],
                              y = .data[[y_var]],
                              fill = .candidate_missfit)) +
-      ggplot2::geom_point(size = 2,
-                          shape = 21,
-                          alpha = point_alpha,
-                          position = ggplot2::position_jitter(width = point_wjitter,
-                                                              height = point_hjitter)) +
-      ggrepel::geom_text_repel(aes(label = misslab),
-                               show.legend = FALSE) +
-      ggplot2::scale_fill_manual(values = fill_colors,
-                                 name = 'Candidate outlier') +
-      ggplot2::labs(x = x_lab,
-                    y = y_lab,
-                    title = plot_title) +
+      geom_point(size = 2,
+                 shape = 21,
+                 alpha = point_alpha,
+                 position = position_jitter(width = point_wjitter,
+                                            height = point_hjitter)) +
+      geom_text_repel(aes(label = misslab),
+                      show.legend = FALSE) +
+      scale_fill_manual(values = fill_colors,
+                        name = 'Candidate outlier') +
+      labs(x = x_lab,
+           y = y_lab,
+           title = plot_title) +
       cust_theme
 
     if(smooth) {
@@ -110,16 +110,16 @@
       if(silent) {
 
         suppressWarnings(point_plot <- point_plot +
-                           ggplot2::geom_smooth(show.legend = FALSE,
-                                                color = 'black',
-                                                fill = 'dodgerblue2', ...))
+                           geom_smooth(show.legend = FALSE,
+                                       color = 'black',
+                                       fill = 'dodgerblue2', ...))
 
       } else {
 
         point_plot <- point_plot +
-          ggplot2::geom_smooth(show.legend = FALSE,
-                               color = 'black',
-                               fill = 'dodgerblue2', ...)
+          geom_smooth(show.legend = FALSE,
+                      color = 'black',
+                      fill = 'dodgerblue2', ...)
 
       }
 
@@ -192,7 +192,7 @@
 #' diagnostic residuals plots.
 
   get_qc_plots <- function(predx_object,
-                           cust_theme = ggplot2::theme_classic(),
+                           cust_theme = theme_classic(),
                            point_wjitter = 0.01,
                            point_hjitter = 0.01,
                            point_alpha = 0.75) {

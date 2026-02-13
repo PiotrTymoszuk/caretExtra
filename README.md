@@ -7,17 +7,25 @@ Tools for quality control, prediction and plotting of caret models
 
 ## Description
 
-The `caretExtra` package includes a bunch of methods for user friendly extraction of predictions in the train, cross-validation and test data, fit statistic calulation, diagnostic via residuals plots and graphical representation of the results as scatter, ROC and heat map plots. In addition, regression models may be calibrated by the quantile GAM (generalized additive model) method.
+The `caretExtra` package includes a bunch of methods for user friendly extraction 
+of predictions in the train, cross-validation and test data, fit statistic calculation, 
+diagnostic via residuals plots, and graphical representation of the results as scatter, 
+ROC and heat map plots. 
+In addition, regression models may be calibrated by the quantile GAM (generalized additive model) method.
 
-Currently, it works only with cross-validated Caret models (CV or repreated CV) created from formula objects. Solution for bootstrap and holdout model construction methods are on the way.
+Currently, it works only with cross-validated Caret models (CV or repeated CV) created from formula objects. 
+Solutions for bootstrap and holdout model construction methods are on the way.
 
-Some concepts of modeling, validatin and evaluation of models followed by the `caretExtra` package are presented in [a presentation](https://github.com/PiotrTymoszuk/caretExtra/blob/6b0b0bb461cd31dec92eecdad1b05a708682e1f0/inst/concepts/ml_workshop.pdf)
+Some concepts of modeling, validation and evaluation of models followed by 
+the `caretExtra` package are presented in 
+[a presentation](https://github.com/PiotrTymoszuk/caretExtra/blob/main/inst/concepts/ml_workshop.pdf)
 
 ## Installation
 
 You may easily fetch the package and its dependencies `somKernels` and `clustTools` with `devtools`: 
 
 ```r
+
 ## dependencies
 
 devtools::install_github('PiotrTymoszuk/clustTools')
@@ -39,7 +47,18 @@ The package maintainer is [Piotr Tymoszuk](mailto:piotr.s.tymoszuk@gmail.com).
 
 ## Acknowledgements
 
-`caretExtra` uses tools provided by the [rlang](https://rlang.r-lib.org/), [tidyverse](https://www.tidyverse.org/), [caret](https://topepo.github.io/caret/), [coxed](https://cran.r-project.org/web/packages/coxed/index.html), [ggrepel](https://ggrepel.slowkow.com/), [generics](https://github.com/r-lib/generics), [DescTools](https://andrisignorell.github.io/DescTools/), [plotROC](https://cran.r-project.org/web/packages/plotROC/vignettes/examples.html), [qgam](https://mfasiolo.github.io/qgam/), and [survial](https://cran.r-project.org/web/packages/survival/index.html). Many thanks to their developers, maintainers and contributors.
+`caretExtra` uses tools provided by the packages 
+[rlang](https://rlang.r-lib.org/), 
+[tidyverse](https://www.tidyverse.org/), 
+[caret](https://topepo.github.io/caret/), 
+[ggrepel](https://ggrepel.slowkow.com/), 
+[generics](https://github.com/r-lib/generics), 
+[plotROC](https://cran.r-project.org/web/packages/plotROC/vignettes/examples.html), 
+[qgam](https://mfasiolo.github.io/qgam/), and 
+[survial](https://cran.r-project.org/web/packages/survival/index.html). 
+The R code for calculation of BCA confidence intervals was authored by 
+Jonathan Kropko (https://github.com/jkropko/coxed/blob/master/R/bca.R ). 
+Many thanks to their Developers, Maintainers and Contributors.
 
 ## Usage
 
@@ -49,13 +68,24 @@ The package maintainer is [Piotr Tymoszuk](mailto:piotr.s.tymoszuk@gmail.com).
 
 In the example of basic usage of the `caretExtra` tools, I'll use three published data sets: 
 
-* `Boston` provided by the R package `MASS` consisting of data on environmental, geographic and socioeconomic features of houses in Boston as well as their value. This data set will be used for modeling of the house value with regression
+* `Boston` provided by the R package `MASS` consisting of data on environmental, 
+geographic and socioeconomic features of houses in Boston as well as their value. 
+This data set will be used for regression modeling of the house value
 
-* `biopsy` included in the `MASS` package consisting of nine pathological and cytologic properties of breast lesion biopsies rated by the pathologist with a 1 - 10 point scale. With this data set I'll construct a binary classifier predicting the biopsy sample classification as benign or malignant tissue
+* `biopsy` included in the `MASS` package consisting of nine pathological and 
+cytologic properties of breast lesion biopsies rated by the pathologist with a 1 - 10 point scale. 
+With this data set I'll construct a binary classifier predicting the biopsy sample 
+classification as benign or malignant tissue
 
-* `wines` included in the `kohonen` package. and consisting of physical and chemical properties of various Italian wines. This data set will be used to model vintage class with a multi-category classifier
+* `wines` included in the `kohonen` package and consisting of physical and chemical 
+properties of various Italian wines. 
+This data set will be used to model vintage class with a multi-category classifier
 
-For each data set, randomly selected two-thirds of observations will be used for tuning of the models with 5-repeats 5 fold cross-validation. The remaining observations will be put aside for the final evaluation of the model performance. 
+For each data set, randomly selected two-thirds of observations will be used 
+for tuning (i.e. finding of hyper-parameters) of the models with 
+5-repeats 5-fold cross-validation and training. 
+The remaining observations will be put aside for the final evaluation 
+of the model performance. 
 
 Let's start with few packages which are required for the current analysis:
 
@@ -83,10 +113,16 @@ Let's start with few packages which are required for the current analysis:
   ## patchwork for plot panels
 
   library(patchwork)
+  
 ```
-Preprocessing is in many cases a tedious step preceding the 'real' analysis. For the `Boston` data set, this includes recoding of the dummy chas variable and normalization of numeric explanatory features as well as selection of the training and test subset observations with the `createDataPartition()` function from the `caret` package. 
+
+Pre-processing is in many cases a tedious step preceding the 'real' analysis. 
+For the `Boston` data set, this includes re-coding of the dummy `chas` variable and 
+normalization of numeric explanatory features as well as selection of the training 
+and test subset observations with the `createDataPartition()` function from the `caret` package. 
 
 ```r
+
   ## Boston: used for the regression model of the house price
   ## normalization of numeric explanatory variables
   ## adding the observation ID in the rownames
@@ -116,8 +152,10 @@ Preprocessing is in many cases a tedious step preceding the 'real' analysis. For
 
   my_boston <- list(train = my_boston[boston_ids, ],
                     test = my_boston[-boston_ids, ])
+                    
 ```
 ```r
+
 > my_boston %>% map(head)
 $train
              crim          zn      indus chas        nox         rm         age       dis        rad        tax    ptratio
@@ -150,11 +188,16 @@ obs_4  -1.36017078 33.4
 obs_5  -1.02548665 36.2
 obs_9   2.41937935 16.5
 obs_12  0.08639286 18.9
+
 ```
 
-Pre-processing of the `biopsy` data set is quite easy: I'm not going to normalize the numeric explanatory variables because they are anyway on the same scale. Still, I'm setting unique observation names and selecting the training and test observations with `createDataPartition()`:
+Pre-processing of the `biopsy` data set is quite easy: 
+I'm not going to normalize the numeric explanatory variables because they are anyway on the same scale. 
+Still, I'm setting unique observation names and selecting the training and test 
+observations with `caret`'s function `createDataPartition()`:
 
 ```r
+
   ## biopsy: binary classification of benign and malignant samples
   ## explanatory variables are not normalized, since they
   ## are anyway in the  same 1 - 10 scale
@@ -175,6 +218,7 @@ Pre-processing of the `biopsy` data set is quite easy: I'm not going to normaliz
 
   my_biopsy <- list(train = my_biopsy[biopsy_ids, ],
                     test = my_biopsy[-biopsy_ids, ])
+                    
 ```
 
 ```r
@@ -198,9 +242,12 @@ $test
 1033078_sample_10  4  2  1  1  2  1  2  1  1    benign
 ```
 
-In the `wines` data set I need to rename variables to be compatible with R formulas, normalize explanatory variables and select the training and test observations in a similar way as for the remaining data sets:
+In the `wines` data set I need to rename variables to be compatible with R formulas, 
+normalize explanatory variables, and select the training and test observations 
+in a similar way as for the remaining data sets:
 
 ```r
+
   ## wines: multi-level classification of vintages
   ## normalization of explanatory variables
   ## IDs in the rownames
@@ -230,6 +277,7 @@ In the `wines` data set I need to rename variables to be compatible with R formu
 ```
 ```r
 > my_wines %>% map(head)
+
 $train
          alcohol  malic.acid        ash ash.alkalinity   magnesium tot..phenols flavonoids non.flav..phenols    proanth
 wine_1 0.2551008 -0.50020530 -0.8221529     -2.4930372  0.02909756    0.5710456  0.7375437        -0.8208101 -0.5370519
@@ -263,7 +311,12 @@ wine_24  0.7114449 1.72415433  0.31727220  Barolo
 wine_26 -0.1614029 0.87321470  1.42879247  Barolo
 ```
 
-`caret` models to be analyzed with the `caretExtra` tools need to meet few requirements. They need to be constructed with a formula, tuned in a cross-validation setting (single or repeated), contain the training data, final predictions and performance metrics in final resamples. Specifically for classification models, propabilities of class assignment need to be included in the `caret` object. To make sure that all those elements are included in modeling results, we customize the `trainControl` object as presented below: 
+`caret` models to be analyzed with the `caretExtra` tools need to meet few requirements. 
+They need to be constructed with a formula, tuned in a cross-validation setting (single or repeated), 
+as well as contain the training data, final predictions and performance metrics in final re-samples. 
+Specifically for classification models, probabilities of class assignment need to be included in the `caret` object. 
+To make sure that all those elements are included in modeling results, 
+we customize the `trainControl` object as presented below: 
 
 ```r
 
@@ -274,10 +327,18 @@ wine_26 -0.1614029 0.87321470  1.42879247  Barolo
                                 returnData = TRUE,
                                 returnResamp = 'final',
                                 classProbs = TRUE)
+                                
 ```
-Setting `savePredictions = 'final'`, `returnData = TRUE`, `returnResamp = 'final'` and, for classification models, `classProbs = TRUE` is absolutely crucial for subsequent analysis. Calling `as_caretx()` for caret models without these components raises an error.
+Setting `savePredictions = 'final'`, `returnData = TRUE`, `returnResamp = 'final'` and, 
+for classification models, `classProbs = TRUE` is absolutely crucial for subsequent analysis. 
+Calling `as_caretx()` for caret models without these components raises an error.
 
-Construction of `caret` models is done as usual with the `train()` function. Importantly, the models must be built with formulas and not with the `x` and `y` variable matrices, and the customized `trainControl` object needs to be passed to the `trControl` argument. In the current example, I will fit the requested models with the gradient boosted machine (GBM) algorithm and default tune grids. You are however welcome to test a richer set of combinations of the tuning parameters.
+Construction of `caret` models is done as usual with the `train()` function. 
+Importantly, the models must be built with formulas and not with the `x` and `y` variable matrices, 
+and the customized `trainControl` object needs to be passed to the `trControl` argument. 
+In the current example, I will fit the requested models with the gradient boosted machine (GBM) algorithm 
+and default tune grids. 
+You are however welcome to test a richer set of combinations of the hyper-parameters.
 
 ```r
   my_models <- list()
@@ -307,7 +368,9 @@ Construction of `caret` models is done as usual with the `train()` function. Imp
   stopImplicitCluster()
 
 ```
-The final step of the model construction is simple: I'm just calling `as_caretx()` for the models. Of importance, the function returns objects of the `caretx` class, which inherit most of the methods from traditional `caret` models. 
+The final step of the model construction is simple: I'm just calling `as_caretx()` for the models. 
+Of importance, the function returns objects of the `caretx` class, which inherit most of the methods 
+from traditional `caret` models. 
 
 ```r
 
@@ -316,11 +379,20 @@ The final step of the model construction is simple: I'm just calling `as_caretx(
 
 ```
 
-My personal experience with the anyway excellent `caret` package was that regression and classification models required different and quite often project-specific approaches to diagnostic, performance evaluation and visualization. This was my prime motivation to develop the `caretExtra` package. Another motivation was to create a framework compatible with `tidyverse` environment and `ggplot` graphic interface. For this reasons, the package offers a relatively simple S3 method interface (`model.frame()`, `plot()`, `summary()`, `components()` etc.), returns numeric statistics in `tibble` form and generates `ggplot` graphical objects that can be easily customized by the user.
+My personal experience with the anyway excellent `caret` package was 
+that regression and classification models required different and quite often project-specific 
+approaches to diagnostic, performance evaluation and visualization. 
+This was my prime motivation to develop the `caretExtra` package. 
+Another motivation was to create a framework compatible with `tidyverse` environment and `ggplot` graphic interface. 
+For this reasons, the package offers a relatively simple S3 method interface 
+(`model.frame()`, `plot()`, `summary()`, `components()` etc.), returns numeric statistics in `tibble` form, 
+and generates `ggplot` graphical objects that can be easily customized by the user.
 
-For instance, `model.frame()` and `formula()` extract respectively the training data and the formula from the model.
+For instance, `model.frame()` and `formula()` extract, respectively, the training data 
+and the formula from the model.
 
 ```r
+
 > head(model.frame(my_models$regression))
 
              crim          zn      indus chas        nox         rm         age       dis        rad        tax    ptratio
@@ -370,7 +442,14 @@ attr(,"dataClasses")
  "factor" "numeric" "numeric" "numeric" "numeric" "numeric" "numeric" "numeric" "numeric" "numeric"
 
 ```
-Model residuals are computed by `residuals()`, while `augment()` returns the actual outcome (`.outcome`) with predictions in the training data and out-of-fold predictions in resamples (`.fitted`) together with class assignment probabilities and the explanatory variables. By providing the `residuals()` and `augment()` functions with a test data set passed to the optional `newdata` argument, test set residuals and predictions can be calculated as well:
+
+Model residuals are computed by `residuals()`, while `augment()` returns 
+the actual outcome (`.outcome`) with predictions in the training data and 
+out-of-fold predictions in re-samples (`.fitted`) together with class assignment 
+probabilities and the explanatory variables. 
+By providing the `residuals()` and `augment()` functions with a test data set 
+passed to the optional `newdata` argument, test set residuals and predictions can 
+be calculated as well:
 
 ```r
 > residuals(my_models$regression, newdata = my_boston$test)
@@ -470,7 +549,10 @@ $cv
 
 ```
 
-Many other elements of the model like tuning results, square distances to the outcome and confusion matrices can be extracted from the model with the `components()` method. As described above, if `newdata` is specified, the requested metrics and objects are generated not only for the training and cross-validaiton data sets but also for the test data:
+Many other elements of the model like tuning results, squared distances to the outcome (Brier's squares)
+and confusion matrices can be extracted from the model with the `components()` method. 
+As described above, if `newdata` is specified, the requested metrics and objects are generated not only 
+for the training and cross-validation data sets but also for the test data:
 
 ```r
 > components(my_models$multi_class, what = 'tuning')
@@ -558,7 +640,17 @@ $test
 
 #### Regression models
 
-By calling `plot(type = 'diagnostic')` for a regression model, a list of `ggplot` objects with diagnostic plots of residuals is returned. Such list includes plots of residuals versus fitted (`resid_fitted`), standardized residuals versus fitted (`std.resid_fitted`), square residuals versus fitted (`sq.resid_fitted`) and quantile-quantile plot of residuals, which can be helpful at assessment of residuals' normality (`qq.std.resid`). Candidate outliers identified with the $2 \times SD$ cutoff are highlighted in red. As before, if `newdata` is specified, diagnostic plots will be generated for the test data set as well.
+By calling `plot(type = 'diagnostic')` for a regression model, 
+a list of `ggplot` objects with diagnostic plots of residuals is returned. 
+Such list includes plots of 
+residuals versus fitted (`resid_fitted`), 
+standardized residuals versus fitted (`std.resid_fitted`), 
+square residuals versus fitted (`sq.resid_fitted`), 
+and quantile-quantile plot of residuals, which can be helpful at assessment of 
+residuals' normality (`qq.std.resid`). 
+Candidate outliers identified with the $2 \times SD$ cutoff are highlighted in red. 
+As before, if `newdata` is specified, diagnostic plots will be generated for the 
+test data set as well.
 
 ```r
   regression_resid_plots <- plot(my_models$regression,
@@ -595,9 +687,16 @@ By calling `plot(type = 'diagnostic')` for a regression model, a list of `ggplot
 ```
 ![image](https://github.com/PiotrTymoszuk/caretExtra/assets/80723424/b4954e3a-146f-463f-a864-8bec093f59e2)
 
-In many instances plots of predicted and observed values of the outcome variable are useful, e.g. for assessing model calibration. They are generated by calling `plot(type = 'fit')`. In such plots, the ideal calibration is represented by a slope 1 dashed line. By default, LOESS or GAM trends (`geom_smooth()` from `ggplot2`) are displayed as well; R^2 and RMSE values are displayed in the plot subtitle and numbers of complete observations are indicated in the plot tag:
+In many instances plots of predicted and observed values of the outcome variable are useful, 
+e.g. for assessing model calibration. T
+hey are generated by calling `plot(type = 'fit')`. 
+In such plots, the ideal calibration is represented by a slope 1 dashed line. 
+By default, LOESS or GAM trends (`geom_smooth()` from `ggplot2`) are displayed as well; 
+$R^2$ and RMSE values are displayed in the plot subtitle and numbers of complete 
+observations are indicated in the plot tag:
 
 ```r
+
   regression_fit_predict <- plot(my_models$regression,
                                  newdata = my_boston$test,
                                  type = 'fit')
@@ -615,23 +714,33 @@ In many instances plots of predicted and observed values of the outcome variable
 ```
 ![image](https://github.com/PiotrTymoszuk/caretExtra/assets/80723424/aff30e66-4ac9-4429-9953-df9cad1e52b9)
 
-A graphical representation of the key performance statistics: R^2, RMSE and Spearman's $\rho$ coefficient of correlation between the outcome and predictions can be plotted with `plot(type = 'performance')`:
+A graphical representation of the key performance statistics: R^2, RMSE and Spearman's $\rho$ 
+coefficient of correlation between the outcome and predictions can be plotted with `plot(type = 'performance')`:
 
 ```r
+
   regression_performance_plots <- plot(my_models$regression,
                                        newdata = my_boston$test,
                                        type = 'performance')
 
   regression_performance_plots +
     scale_size_area(limits = c(0, 1))
+    
 ```
 ![image](https://github.com/PiotrTymoszuk/caretExtra/assets/80723424/46bab64a-ede7-4215-b019-25144e18dbcd)
 
 #### Binary classifiers
 
-Class assignment probability and square distance to the outcome may serve as quality measures for classification models. They can be obtained by calling `plot(type = 'class_p')`. In this case, a list of scatter plots of sorted class assignment probabilities (`winner_p`) and squared distance to the outcome (`square_dist`) is returned. Misclassified observations are highlighted in red. By default, overall accuracy, Cohen's $\kappa$ and Brier score (BS) are displayed in the plot subtitles.
+Class assignment probability and squared distance to the outcome (Brier's square, interpretable as a squared model error) 
+may serve as quality measures for classification models. 
+They can be obtained by calling `plot(type = 'class_p')`. 
+In this case, a list of scatter plots of sorted class assignment probabilities (`winner_p`) 
+and squared distance to the outcome (`square_dist`) is returned. 
+Misclassified observations are highlighted in red and labeled with their indexes. 
+By default, overall accuracy, Cohen's $\kappa$ and Brier score (BS) are displayed in the plot subtitles.
 
 ```r
+
   binary_p_plots <- plot(my_models$binary,
                          newdata = my_biopsy$test,
                          type = 'class_p')
@@ -649,13 +758,16 @@ Class assignment probability and square distance to the outcome may serve as qua
          ~.x +
            labs(title = .y) +
            theme(legend.position = 'bottom'))
+           
 ```
 
 ```r
+
   binary_sq_dist_plots$train  +
     binary_sq_dist_plots$cv +
     binary_sq_dist_plots$test +
     plot_layout(ncol = 2)
+    
 ```
 ![image](https://github.com/PiotrTymoszuk/caretExtra/assets/80723424/9ec8d044-2e24-4b38-af3b-019f1ce4fd9f)
 
@@ -667,7 +779,9 @@ Class assignment probability and square distance to the outcome may serve as qua
 ```
 ![image](https://github.com/PiotrTymoszuk/caretExtra/assets/80723424/9cf40621-fb99-4dcd-b0bd-5324baf1de3b)
 
-Heat map representations of confusion matrices are fetched by `plot(type = 'confusion')`. By default, such heat maps of confusion matrices visualize observation counts. To make them show percentages, the user can specify `scale = 'percent'`:
+Heat map representations of confusion matrices are fetched by `plot(type = 'confusion')`. 
+By default, such heat maps of confusion matrices visualize observation counts. 
+To make them show percentages, the user can specify `scale = 'percent'`:
 
 ```r
   binary_confusion_plots <- plot(my_models$binary,
@@ -689,7 +803,13 @@ Heat map representations of confusion matrices are fetched by `plot(type = 'conf
 ```
 ![image](https://github.com/PiotrTymoszuk/caretExtra/assets/80723424/460bfdf0-442e-45f3-9892-1e65b2946f47)
 
-Graphical representation of results of receiver operating characteristic, so called 'ROC curves', is a traditional way to visualize sensitivity, specificity and overall accuracy (so called area under the curve or AUC) of a classifier. Such plots are obtained with `plot(type = 'roc')`. Again, by specifying `newdata`, ROC curves will be plotted also for the test data set. Sensitivity (Se), specificity (Sp) at the `p = 0.5` class assignment probability cutoff as well as AUC are presented in the plots.
+Graphical representation of results of receiver operating characteristic, 
+so called 'ROC curves', is a traditional way to visualize sensitivity, 
+specificity and overall accuracy (so called area under the curve or AUC) of a classifier. 
+Such plots are obtained with `plot(type = 'roc')`. 
+Again, by specifying `newdata`, ROC curves will be plotted also for the test data set. 
+Sensitivity (Se), specificity (Sp) at the `p = 0.5` class assignment probability cutoff 
+as well as AUC are presented in the plots.
 
 ```r
   binary_roc_plots <- plot(my_models$binary,
@@ -709,7 +829,10 @@ Graphical representation of results of receiver operating characteristic, so cal
 ```
 ![image](https://github.com/PiotrTymoszuk/caretExtra/assets/80723424/02488e87-ee6b-4398-9abf-c56b56b419aa)
 
-By calling `plot(type = 'performance')`, the most essential performance statistics, overall accuracy, Cohen's $\kappa$ and Brier score, can be displayed in a bubble plot. As with any `ggplot2` object returned by the package's tools, feel free to modify it!
+By calling `plot(type = 'performance')`, 
+the most essential performance statistics, overall accuracy, Cohen's $\kappa$ and Brier score, 
+can be displayed in a bubble plot. 
+As with any `ggplot2` object returned by the package's tools, feel free to modify it!
 
 ```r
   binary_performance_plots <- plot(my_models$binary,
@@ -728,7 +851,8 @@ By calling `plot(type = 'performance')`, the most essential performance statisti
 
 #### Multi-category classifiers
 
-In general, the repertoire of plots for multi-category classifiers is similar to binary classifer plots with exception of ROC curves which are available only for the later.
+In general, the repertoire of plots for multi-category classifiers is similar to 
+binary classifier plots with exception of ROC curves which are available only for the later.
 
 ```r
   ## plots of squared distances
@@ -782,13 +906,27 @@ In general, the repertoire of plots for multi-category classifiers is similar to
 
 The most crucial model performance statistics can be computed for `caretex` models with the `summary()` method: 
 
-* _regression models_: mean absolute error (`MAE`), mean square error (`MSE`), root mean square error (`RMSE`), pseudo-R^2 metric of explained variance (`rsq`), R^2 computed as square Pearson's correlation coefficient (`caret_rsq`) as well as coefficients of correlation between the outcome and predictions (Pearson's r: `pearson`, Spearman's $\rho$: `spearman`, Kendall's $\tau B$: `kendall`)
+* _regression models_: mean absolute error (`MAE`), mean square error (`MSE`), root mean square error (`RMSE`), 
+R^2 metric of explained variance (`rsq`), R^2 computed as square Pearson's correlation coefficient 
+(as done natively by caret `caret_rsq`) as well as coefficients of correlation between the outcome and 
+predictions (Pearson's r: `pearson`, Spearman's $\rho$: `spearman`, Kendall's $\tau B$: `kendall`)
 
-* _binary classifiers_: Harrel's concordance index (`c_index`), log loss (`log_loss`), area under the ROC curve (`AUC`), area under the precision-recall curve (`prAUC`), overall accuracy (`correct_rate`), Cohen's $\kappa$ (`kappa`), F1 score (`F1`), sensitivity and specificity (`Se` and `Sp`), positive and negative prdiction value (`PPV` and `NPV`), precision, recall, detection rate (`detection_rate`), balanced accuaracy (`balanced_accuracy`), Brier score (`brier_score`), as well as mean assignment probabilty in the outcome and fitted classes (`class_p_outcome` and `class_p_fitted`)
+* _binary classifiers_: Harrell's concordance index (`c_index`), log loss (`log_loss`), 
+area under the ROC curve (`AUC`), area under the precision-recall curve (`prAUC`), 
+overall accuracy (`correct_rate`), Cohen's $\kappa$ (`kappa`), F1 score (`F1`), sensitivity and specificity (`Se` and `Sp`), 
+positive and negative prediction value (`PPV` and `NPV`), precision, recall, 
+detection rate (`detection_rate`), balanced accuracy (`balanced_accuracy`), 
+Brier score (`brier_score`), as well as mean assignment probability in the outcome and 
+fitted classes (`class_p_outcome` and `class_p_fitted`)
 
-* _multi-category classifiers_: as above except of Harrel's concordance index. Note that ROC metrics are averaged over all classes. Additionally, Brier score is calculated in a bit different way for multi-category classification models as compared with binary classifiers (see: the note by Goldstein-Greenwood in the reference list)
+* _multi-category classifiers_: as above except of Harrell's concordance index. 
+Note that ROC metrics are averaged over all classes. Additionally, Brier score is calculated in a 
+bit different way for multi-category classification models as compared with binary classifiers 
+(see: the note by Goldstein-Greenwood in the reference list)
 
-The function computes the performance statistics for predictions in the training data set and out-of-fold predictions. By specifying the optional `newdata` argument, evaluation of model performance in the test data set will be done as well.
+The function computes the performance statistics for predictions in the training data 
+set and out-of-fold predictions. 
+By specifying the optional `newdata` argument, evaluation of model performance in the test data set will be done as well.
 
 ```r
   regression_stats <- summary(my_models$regression,
@@ -992,7 +1130,16 @@ $test
 
 <details>
 
-There are cases, when you would like to have a more detailed look at predictions of a machine learnig model in a particular suset of subsets of the data. This can be conveniently done by `split()` applied to a `caretx` model. The splitting factor - a categorical variable present in the training and, optionally, test data set - is speficied by the `f` argument. The `split()` method returns a plain list of prediction objects, which can be plotted or evaluated with `plot()` and `summary()` as described above. In this particular example, we would like to know, how the Boston house price model wors for objects located at and beyond the Charles River bank (coded by the `chas` variable in the `Boston` data set):
+There are cases, when you intend to have a more detailed look at predictions 
+of a machine learning model in a particular subset of subsets of the data. 
+This can be conveniently done by `split()` applied to a `caretx` model. 
+The splitting factor - a categorical variable present in the training and, optionally, 
+test data set - is specified by the `f` argument. 
+The `split()` method returns a plain list of prediction objects, which can 
+be plotted or evaluated with `plot()` and `summary()` as described above. 
+In this particular example, we would like to know, how the Boston house price 
+model works for objects located at and beyond the Charles River bank 
+(coded by the `chas` variable in the `Boston` data set) as measured by mean absolute error:
 
 ```r
   regression_chas <- split(my_models$regression,
@@ -1024,7 +1171,16 @@ $cv.yes
 ### Quality of detection in outcome variable classes
 
 <details>
-In many cases it is worthwhile to check how a multi-category classification model performs in the outcome variable classes. ROC metrics for particular classes obtained by the one versus rest comparisons can be easily computed with `clstats()`. Additionally, by calling `clplots()` for a multi-class model, ROC plots for all classes of the response variable are generated. Both functions will return the statistics or plots in a list for the training and out-of-fold predictions. By providing a data frame to the `newdata` argument, the ROC metrics and plots will be returned for the test data set as well.
+
+In many cases it is worthwhile to check how a multi-category classification 
+model performs in the outcome variable classes. 
+ROC metrics for particular classes obtained by the one versus rest comparisons 
+can be easily computed with `clstats()`. 
+Additionally, by calling `clplots()` for a multi-class model, ROC plots for all 
+classes of the response variable are generated. Both functions will return the statistics or plots in 
+a list for the training and out-of-fold predictions. 
+By providing a data frame to the `newdata` argument, 
+the ROC metrics and plots will be returned for the test data set as well.
 
 ```r
 > clstats(my_models$multi_class, newdata = my_wines$test)

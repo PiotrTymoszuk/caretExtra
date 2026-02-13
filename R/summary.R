@@ -8,7 +8,7 @@
 #' predictions (\code{\link{predx}}).
 #' For regression, those include the fit errors and outcome - fitted value
 #' correlations.
-#' For binary classification, concordance (C-index), kappa, accuracy,
+#' For binary classification, concordance (C-index), kappa, accuracy, log-loss,
 #' receiver-operator characteristic (ROC), weighted average class probabilities
 #' and Brier scores are returned.
 #' For multiple-class predictions and models, accuracy, kappa, weighted average
@@ -39,8 +39,8 @@
 #' mean absolute error (MAE),
 #' mean squared error (MSE) and root-MSE (RMSE).
 #' Pseudo R squared is calculated as 1 - MSE/Var(y).
-#' Pearson correlation is obtained with \code{\link[stats]{cor.test}},
-#' Spearman correlation is computed with \code{\link[DescTools]{SpearmanRho}},
+#' Pearson's correlation is obtained with \code{\link[stats]{cor.test}},
+#' Spearman's correlation is computed with \code{\link[DescTools]{SpearmanRho}},
 #' Kendall's TauB is obtained with \code{\link[stats]{cor}}.
 #' For cross-validation (CV) prediction, statistic values are calculated as
 #' mean across the CV with 95\% confidence intervals (CI).
@@ -162,7 +162,7 @@
       stats <- map2_dfr(stats, names(stats),
                         ~mutate(.x, prediction = .y))
 
-      stats <- dplyr::relocate(stats, prediction)
+      stats <- relocate(stats, prediction)
 
     }
 

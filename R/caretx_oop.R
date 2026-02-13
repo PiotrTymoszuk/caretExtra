@@ -2,7 +2,7 @@
 
 # Prediction methods -----
 
-#' Predict the outcome for a caretx model.
+#' Predict the outcome for a `caretx` model.
 #'
 #' @description
 #' Predicts the outcome in train, cross-validation and, optionally,
@@ -15,13 +15,14 @@
 #' @param plain logical, should the results be coerced to a single data frame?
 #' @param ... extra arguments, currently none.
 #'
-#' @return a list of \code{\link{predx}} objects containing the predictions
-#' for the training, resample (CV) and test data sets along with
+#' @return
+#' a list of \code{\link{predx}} objects containing the predictions
+#' for the training, re-sample (CV, out-of-fold) and test data sets, along with
 #' model and data set type information.
 #' See: \code{\link{components.predx}}, \code{\link{summary.predx}},
 #' \code{\link{residuals.predx}}, \code{\link{confusion.predx}}
 #' and \code{\link{plot.predx}} for useful methods for `predx` objects.
-#' If `plain` is set to TRUE a prediction data frame if plain is set to TRUE.
+#' If `plain` is set to TRUE a prediction data frame is returned.
 #'
 #' @export predict.caretx
 #' @export
@@ -78,8 +79,8 @@
 #'
 #' @description
 #' The `augment()` method for \code{\link{caretx}} objects derives the
-#' predictions for the training, resample (CV), and, optionally, test
-#' data set appended with the explanatory variables.
+#' predictions for the training, re-sample (CV, out-of-fold), and, optionally,
+#' test data set appended with the explanatory variables.
 #'
 #' @param x a \code{\link{caretx}} object.
 #' @param newdata an optional data frame with the test data.
@@ -128,17 +129,19 @@
 #'
 #' @description
 #' The `split()` method for the \code{\link{caretx}} class generates predictions
-#' for the training, resample (CV) and, optionally, test data set and splits
-#' them by the levels of an explanatory factor present in the training data.
+#' for the training, re-sample (CV, out-of-fold) and, optionally, test data set
+#' and splits them by the levels of an explanatory factor present
+#' in the training data.
 #'
 #' @details
 #' This method may be used to investigate quality of prediction in a particular
-#' subset or subsets of the data set. The method returns a plain list of
+#' subset or subsets of the modeling data. The method returns a plain list of
 #' \code{\link{predx}} objects, whose properties can be further explored
 #' with the specific \code{\link{summary.predx}} and \code{\link{plot.predx}}
 #' methods.
 #'
-#' @return a plain list of \code{\link{predx}} objects.
+#' @return a plain list of \code{\link{predx}} objects named after levels of
+#' the splitting factor.
 #'
 #' @param x a \code{\link{caretx}} object.
 #' @param f a splitting factor, in quoted or unquoted form.
@@ -160,7 +163,7 @@
     stopifnot(is_caretx(x))
     stopifnot(is.logical(drop))
 
-    f <- rlang::as_string(rlang::ensym(f))
+    f <- as_string(ensym(f))
 
     ## augmented data --------
 
@@ -192,9 +195,9 @@
                                classes)))
 
     pred_types <-
-      stringi::stri_replace(names(split_data),
-                            regex = '\\..*$',
-                            replacement = '')
+      stri_replace(names(split_data),
+                   regex = '\\..*$',
+                   replacement = '')
 
     if(is.null(levels(split_data[[1]][['.outcome']]))) {
 

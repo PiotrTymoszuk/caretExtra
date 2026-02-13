@@ -31,14 +31,14 @@
 \code{\link{predx}} prediction object.}
 
 \item{newdata}{test data set required for making predictions.
-NULL by default, used only if \code{what} is set to \code{prediction}.}
+\code{NULL} by default, used only if \code{what} is set to \code{prediction}.}
 
 \item{what}{name of the requested feature:
 \itemize{
 \item \code{data}: the training data (\code{caretx}) or predictions (\code{predx})
 \item \code{formula}: the model's formula
 \item \code{resample}: a data frame with tuning fit stats in the model's
-resamples (e.g. CV folds)
+re-samples (e.g. CV folds)
 \item \code{tuning}: a data frame with tuning results.
 \item \code{best_tune}: the combination of tuning parameters for
 the model with the optimal performance in the resamples.
@@ -51,7 +51,7 @@ probability
 \item \code{square_dist}: squared distance from the outcome as defined by Brier at al.
 \item \code{n}: the complete case number
 \item \code{n_classes}: number of observations in the true outcome and fitted classes.
-NULL for regression models.
+\code{NULL} for regression models.
 \item \code{residuals}: model fit residuals
 \item \code{confusion}: computes the confusion matrix with observation counts
 }}

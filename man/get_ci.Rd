@@ -15,5 +15,5 @@ get_ci(vector, method = c("percentile", "bca", "norm"))
 a data frame with mean, lower CI and upper CI values
 }
 \description{
-Computes mean with 95\% confidence interval.#'
+Computes mean with 95\% confidence interval.
 }

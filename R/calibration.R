@@ -9,19 +9,19 @@
 #' @details
 #' Currently, only quantile calibration for regression `predx` and `caretx`
 #' objects is implemented. If a vector of quantiles is provided, the optimal
-#' one is choosen based on the minimum RMSE
+#' one is chosen based on the minimum RMSE
 #' (more formal criteria are in development).
 #'
 #' @param x a \code{\link{caretx}} model or \code{\link{predx}} prediction
 #' object.
-#' @param newdata a data frame with the test data.#'
+#' @param newdata a data frame with the test data.
 #' @param bs basis function for the smoother, ignored if a formula provided.
 #' @param k degrees of freedom for the smoother, ignored if a formula provided.
 #' @param qu quantile or quantiles for the calibration,
 #' see: \code{\link[qgam]{qgam}} for details.
 #' @param form optional GAM formula as specified by
 #' \code{\link[mgcv]{formula.gam}}. The uncalibrated predictions are stored
-#' internally in the '.raw' variable, which needs to be included in the
+#' internally in the `.raw` variable, which needs to be included in the
 #' user-provided formula.
 #' @param lsig the value of the log learning rate used to create the
 #' Gibbs posterior, see: \code{\link[qgam]{qgam}} for details.
@@ -34,9 +34,12 @@
 #' @param ... extra arguments passed to \code{\link[qgam]{qgam}}.
 #'
 #' @return A list with the `predx` object
-#' (.raw stores the uncalibrated predctions, .fitted stores the calibrated
-#' predictions) along with the gamObject named `cal_fit`,
-#' the chosen quantile value (`qu`) and values of explained deviance (`qu_tbl`).
+#' (`.raw` variable stores the uncalibrated predctions,
+#' `.fitted` stores the calibrated predictions) along with the
+#' GAM model named `cal_fit`,
+#' the chosen quantile value (`qu`),
+#' and values of explained deviance (`qu_tbl`).
+#'
 #' @export calibration.predx
 #' @export
 
@@ -57,9 +60,9 @@
     stopifnot(is.numeric(k))
     stopifnot(is.numeric(qu))
 
-    if(!is.null(form) & !rlang::is_formula(form)) {
+    if(!is.null(form) & !is_formula(form)) {
 
-      stop('form needs to be a formula.', call = FALSE)
+      stop("'form' needs to be a formula.", call = FALSE)
 
     }
 
@@ -93,23 +96,24 @@
       form <- paste0(".outcome ~ s(.raw, bs = '",
                      bs, "', k = ", k, ")")
 
-      form <- stats::as.formula(form)
+      form <- as.formula(form)
 
     }
 
     ## calibration -------
 
     cal_fit <- map(qu,
-                   ~qgam::qgam(form = form,
-                               data = pred,
-                               qu = .x,
-                               lsig = lsig,
-                               err = err,
-                               control = control,
-                               argGam = argGam, ...))
+                   function(x) qgam(form = form,
+                                    data = pred,
+                                    qu = x,
+                                    lsig = lsig,
+                                    err = err,
+                                    control = control,
+                                    argGam = argGam, ...))
 
     rmse_fit <-
-      map_dbl(cal_fit, ~sqrt(mean((.x$fitted.values - .x$y)^2, na.rm = TRUE)))
+      map_dbl(cal_fit,
+              ~sqrt(mean((.x$fitted.values - .x$y)^2, na.rm = TRUE)))
 
     qu_tbl <- tibble(order = 1:length(qu),
                      qu = qu,

@@ -92,7 +92,7 @@
                          plot_subtitle = NULL,
                          plot_tag = NULL,
                          signif_digits = 2,
-                         cust_theme = ggplot2::theme_classic(), ...) {
+                         cust_theme = theme_classic(), ...) {
 
     ## entry control --------
 
@@ -109,7 +109,10 @@
                   'confusion', 'class_p',
                   'class_stats'))
 
-    if(x$type == 'multi_class' & !type %in% c('fit', 'confusion', 'class_p', 'class_stats')) {
+    if(x$type == 'multi_class' & !type %in% c('fit',
+                                              'confusion',
+                                              'class_p',
+                                              'class_stats')) {
 
       warning(paste('Scatter plots and ROC plots are not available',
                     'for multi-class models.'),
@@ -119,7 +122,10 @@
 
     }
 
-    if(x$type == 'regression' & type %in% c('roc', 'confusion', 'class_p', 'class_stats')) {
+    if(x$type == 'regression' & type %in% c('roc',
+                                            'confusion',
+                                            'class_p',
+                                            'class_stats')) {
 
       warning(paste('ROC, confusion matrix and class-specific plots are not',
                     'available for regression.'),
@@ -280,7 +286,7 @@
                           plot_subtitle = NULL,
                           plot_tag = NULL,
                           signif_digits = 2,
-                          cust_theme = ggplot2::theme_classic(), ...) {
+                          cust_theme = theme_classic(), ...) {
 
     ## entry control --------
 

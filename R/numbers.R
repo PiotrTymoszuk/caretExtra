@@ -50,7 +50,7 @@
 #'
 #' @return a data frame with the class names and numbers of observations
 #' in the outcome and fitted classes (`predx`) or a list of such data frames
-#' for the training, resample (CV) and test datasets.
+#' for the training, re-sample (CV, out-of-fold predictions) and test data sets.
 #'
 #' @export ngroups.predx
 #' @export

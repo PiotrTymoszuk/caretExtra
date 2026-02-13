@@ -33,7 +33,7 @@
 #' @param cust_theme customized plot theme provided by the user.
 #' @param ... extra arguments passed to \code{\link[ggplot2]{geom_smooth}}.
 #'
-#' @return returns a ggplot object.
+#' @return returns a `ggplot` object.
 
   plot_regression <- function(predx_object,
                               x_var = '.outcome',
@@ -53,7 +53,7 @@
                               plot_tag = NULL,
                               x_lab = x_var,
                               y_lab = y_var,
-                              cust_theme = ggplot2::theme_classic(), ...) {
+                              cust_theme = theme_classic(), ...) {
 
     ## entry control ------
 
@@ -85,34 +85,34 @@
       ggplot(components(predx_object, 'data'),
              aes(x = .data[[x_var]],
                  y = .data[[y_var]])) +
-      ggplot2::geom_point(shape = point_shape,
-                          size = point_size,
-                          alpha = point_alpha,
-                          fill = point_color,
-                          position = ggplot2::position_jitter(width = point_wjitter,
-                                                              height = point_hjitter)) +
+      geom_point(shape = point_shape,
+                 size = point_size,
+                 alpha = point_alpha,
+                 fill = point_color,
+                 position = position_jitter(width = point_wjitter,
+                                            height = point_hjitter)) +
       cust_theme +
-      ggplot2::labs(title = plot_title,
-                    subtitle = plot_subtitle,
-                    tag = plot_tag,
-                    x = x_lab,
-                    y = y_lab)
+      labs(title = plot_title,
+           subtitle = plot_subtitle,
+           tag = plot_tag,
+           x = x_lab,
+           y = y_lab)
 
     if(show_trend) {
 
       reg_plot <- reg_plot +
-        ggplot2::geom_smooth(method = trend_method,
-                             size = line_size, ...)
+        geom_smooth(method = trend_method,
+                    linewidth = line_size, ...)
 
     }
 
     if(show_calibration) {
 
       reg_plot <- reg_plot +
-        ggplot2::geom_abline(intercept = 0,
-                             slope = 1,
-                             color = 'black',
-                             size = line_size)
+        geom_abline(intercept = 0,
+                    slope = 1,
+                    color = 'black',
+                    linewidth = line_size)
 
     }
 
@@ -150,7 +150,7 @@
 #' @param cust_theme customized plot theme provided by the user.
 #' @param ... extra arguments passed to \code{\link[plotROC]{geom_roc}}.
 #'
-#' @return returns a  ggplot object.
+#' @return returns a  `ggplot` object.
 
   plot_roc <- function(predx_object,
                        line_color = 'steelblue',
@@ -212,18 +212,18 @@
       ggplot(data,
              aes(d = .data[['.outcome']],
                  m = .data[[predx_object$classes[2]]])) +
-      plotROC::geom_roc(labelsize = annotation_size,
-                        cutoffs.at = cutoffs_at,
-                        pointsize = point_size,
-                        color = line_color,
-                        size = line_size, ...) +
-      plotROC::style_roc() +
-      ggplot2::geom_abline(slope = 1,
-                           intercept = 0,
-                           linetype = 'dashed') +
-      ggplot2::labs(title = plot_title,
-                    subtitle = plot_subtitle,
-                    tag = plot_tag)
+      geom_roc(labelsize = annotation_size,
+               cutoffs.at = cutoffs_at,
+               pointsize = point_size,
+               color = line_color,
+               size = line_size, ...) +
+      style_roc() +
+      geom_abline(slope = 1,
+                  intercept = 0,
+                  linetype = 'dashed') +
+      labs(title = plot_title,
+           subtitle = plot_subtitle,
+           tag = plot_tag)
 
     if(!is.null(cust_theme)) {
 
@@ -235,13 +235,13 @@
     if(!is.null(annotation_txt)) {
 
       roc_plot <- roc_plot +
-        ggplot2::annotate('text',
-                          label = annotation_txt,
-                          x = annotation_x,
-                          y = annotation_y,
-                          hjust = annotation_hjust,
-                          vjust = annotation_vjust,
-                          size = annotation_size)
+        annotate('text',
+                 label = annotation_txt,
+                 x = annotation_x,
+                 y = annotation_y,
+                 hjust = annotation_hjust,
+                 vjust = annotation_vjust,
+                 size = annotation_size)
 
     }
 
@@ -251,7 +251,7 @@
 
 # Classification models: plots of confusion matrix -----
 
-#' Plot confusion matrix for a classification predx object.
+#' Plot confusion matrix for a classification `predx` object.
 #'
 #' @description Generates a heat map representation of the confusion matrix.
 #' Outcome is presented in the X axis, fitted is presented in the Y axis.
@@ -273,7 +273,8 @@
 #' @param x_lab X axis label.
 #' @param y_lab Y axis label.
 #' @param cust_theme customized plot theme provided by the user.
-#' @return returns a ggplot object.
+#'
+#' @return returns a `ggplot` object.
 
   plot_confusion <- function(predx_object,
                              scale = c('none', 'fraction', 'percent'),
@@ -286,7 +287,7 @@
                              plot_tag = NULL,
                              x_lab = '.outcome',
                              y_lab = '.fitted',
-                             cust_theme = ggplot2::theme_classic()) {
+                             cust_theme = theme_classic()) {
 
     ## entry control --------
 
@@ -325,26 +326,26 @@
                         aes(x = .data[['.outcome']],
                             y = .data[['.fitted']],
                             fill = .data[['Freq']])) +
-      ggplot2::geom_tile(color = 'black') +
-      ggplot2::scale_fill_gradient2(low = 'steelblue',
-                                    high = 'firebrick',
-                                    mid = 'white') +
+      geom_tile(color = 'black') +
+      scale_fill_gradient2(low = 'steelblue',
+                           high = 'firebrick',
+                           mid = 'white') +
       cust_theme +
-      ggplot2::labs(title = plot_title,
-                    subtitle = plot_subtitle,
-                    tag = plot_tag,
-                    x = x_lab,
-                    y = y_lab,
-                    fill = NULL)
+      labs(title = plot_title,
+           subtitle = plot_subtitle,
+           tag = plot_tag,
+           x = x_lab,
+           y = y_lab,
+           fill = NULL)
 
     if(show_labels) {
 
       conf_plot <- conf_plot +
-        ggplot2::geom_text(aes(label = signif(.data[['Freq']], signif_digits)),
-                           size = label_size,
-                           hjust = 0.5,
-                           vjust = 0.5,
-                           color = label_color)
+        geom_text(aes(label = signif(.data[['Freq']], signif_digits)),
+                  size = label_size,
+                  hjust = 0.5,
+                  vjust = 0.5,
+                  color = label_color)
 
     }
 
@@ -354,11 +355,11 @@
 
 # Plots of performance stats --------
 
-#' Plots of performance metrics in the training, resample and test data.
+#' Plots of performance metrics in the training, re-sample and test data.
 #'
 #' @description
 #' This internally utilized function takes a `caretx` model and plots selected
-#' performance stats appropriate for the prediction type in the test, resample
+#' performance stats appropriate for the prediction type in the test, re-sample
 #' and, optionally, training data set.
 #' Scatter plots are generated, the data set type is color-coded and,
 #' optionally, indicated in the plot.
@@ -386,7 +387,7 @@
 #' @param cust_theme a custom ggplot theme
 #' @param ... extra arguments passed to \code{\link[ggrepel]{geom_text_repel}}
 #'
-#' @return a ggplot graphic.
+#' @return a `ggplot` graphic.
 
   plot_performance <- function(caretx_object,
                                newdata = NULL,
@@ -394,7 +395,7 @@
                                plot_tag = NULL,
                                show_txt = FALSE,
                                txt_size = 2.75,
-                               cust_theme = ggplot2::theme_classic(), ...) {
+                               cust_theme = theme_classic(), ...) {
 
     ## entry control -------
 
@@ -468,12 +469,12 @@
                             y = rsq,
                             size = spearman,
                             fill = dataset)) +
-        ggplot2::labs(title = 'Regression model performance',
-                      subtitle = plot_subtitle,
-                      tag = plot_tag,
-                      x = 'RMSE',
-                      y = expression('pseudo-R'^2),
-                      size = expression("Spearman's " * rho))
+        labs(title = 'Regression model performance',
+             subtitle = plot_subtitle,
+             tag = plot_tag,
+             x = 'RMSE',
+             y = expression('pseudo-R'^2),
+             size = expression("Spearman's " * rho))
 
     }
 
@@ -484,12 +485,12 @@
                             y = 1 - brier_score,
                             size = correct_rate,
                             fill = dataset)) +
-        ggplot2::labs(title = 'Binary classification model performance',
-                      subtitle = plot_subtitle,
-                      tag = plot_tag,
-                      x = expression("Cohen's " * kappa),
-                      y = '1 - Brier score',
-                      size = 'Accuracy')
+        labs(title = 'Binary classification model performance',
+             subtitle = plot_subtitle,
+             tag = plot_tag,
+             x = expression("Cohen's " * kappa),
+             y = '1 - Brier score',
+             size = 'Accuracy')
 
     }
 
@@ -500,35 +501,35 @@
                             y = 2 - brier_score,
                             size = correct_rate,
                             fill = dataset)) +
-        ggplot2::labs(title = 'Multi-category classification model performance',
-                      subtitle = plot_subtitle,
-                      tag = plot_tag,
-                      x = expression("Cohen's " * kappa),
-                      y = '2 - Brier score',
-                      size = 'Accuracy')
+        labs(title = 'Multi-category classification model performance',
+             subtitle = plot_subtitle,
+             tag = plot_tag,
+             x = expression("Cohen's " * kappa),
+             y = '2 - Brier score',
+             size = 'Accuracy')
 
     }
 
     ## common plot format -------
 
     sc_plot <- sc_plot +
-      ggplot2::geom_point(shape = 21,
-                          color = 'black') +
-      ggplot2::scale_fill_manual(values = data_colors,
-                                 labels = data_labs,
-                                 name = 'Data set') +
+      geom_point(shape = 21,
+                 color = 'black') +
+      scale_fill_manual(values = data_colors,
+                        labels = data_labs,
+                        name = 'Data set') +
       cust_theme
 
     if(show_txt) {
 
       sc_plot <- sc_plot +
-        ggrepel::geom_text_repel(aes(label = unname(data_labs[dataset]),
-                                     color = dataset),
-                                 size = txt_size,
-                                 show.legend = FALSE, ...) +
-        ggplot2::scale_color_manual(values = data_colors,
-                                    labels = data_labs,
-                                    name = 'Data set')
+        geom_text_repel(aes(label = unname(data_labs[dataset]),
+                            color = dataset),
+                        size = txt_size,
+                        show.legend = FALSE, ...) +
+        scale_color_manual(values = data_colors,
+                           labels = data_labs,
+                           name = 'Data set')
 
     }
 
@@ -542,7 +543,7 @@
 #' in the outcome classes.
 #'
 #' @description
-#' `plot_class_p`: This internally used function plots squared distances
+#' `plot_class_p`: This internal-use function plots squared distances
 #' to the outcome (as defined by Brier at al.) and class-assignment
 #' probabilities for the outcome classes as scatter plots.
 #' The correct/false class assignment is color-coded.
@@ -558,7 +559,6 @@
 #'
 #' @details
 #' For regression, NULL and a warning is returned.
-#'
 #'
 #' @references
 #' Brier GW. VERIFICATION OF FORECASTS EXPRESSED IN TERMS OF PROBABILITY.
@@ -601,7 +601,7 @@
                            label_misclassified = TRUE,
                            txt_size = 2.75,
                            txt_color = 'firebrick',
-                           cust_theme = ggplot2::theme_classic()) {
+                           cust_theme = theme_classic()) {
 
     ## entry control ------
 
@@ -682,7 +682,7 @@
 
       facet_labs <- set_names(facet_labs, n_numbers[[1]])
 
-      facet_labs <- ggplot2::as_labeller(facet_labs)
+      facet_labs <- as_labeller(facet_labs)
 
     } else {
 
@@ -708,10 +708,10 @@
 
       sc_plots <- map(sc_plots,
                       ~.x +
-                        ggplot2::facet_grid(. ~ .outcome,
-                                            labeller = facet_labs,
-                                            scales = 'free',
-                                            space = 'free'))
+                        facet_grid(. ~ .outcome,
+                                   labeller = facet_labs,
+                                   scales = 'free',
+                                   space = 'free'))
 
 
     } else {
@@ -728,10 +728,10 @@
 
       sc_plots <- map(sc_plots,
                       ~.x +
-                        ggplot2::facet_grid(.outcome ~ .,
-                                            labeller = facet_labs,
-                                            scales = 'free',
-                                            space = 'free'))
+                        facet_grid(.outcome ~ .,
+                                   labeller = facet_labs,
+                                   scales = 'free',
+                                   space = 'free'))
 
     }
 
@@ -748,33 +748,33 @@
       sc_plots <-
         pmap(plot_lst,
              function(x, y, z) x +
-               ggplot2::labs(title = y,
-                             subtitle = plot_subtitle,
-                             tag = plot_tag,
-                             y = z,
-                             x = 'observation'))
+               labs(title = y,
+                    subtitle = plot_subtitle,
+                    tag = plot_tag,
+                    y = z,
+                    x = 'observation'))
 
     } else {
 
       sc_plots <-
         pmap(plot_lst,
              function(x, y, z) x +
-               ggplot2::labs(title = y,
-                             subtitle = plot_subtitle,
-                             tag = plot_tag,
-                             x = z,
-                             y = 'Observation'))
+               labs(title = y,
+                    subtitle = plot_subtitle,
+                    tag = plot_tag,
+                    x = z,
+                    y = 'Observation'))
 
     }
 
     sc_plots <-
       map(sc_plots,
           ~.x +
-            ggplot2::geom_point(shape = 21,
-                                size = point_size) +
-            ggplot2::scale_fill_manual(values = c(correct = 'steelblue',
-                                                  misclassified = 'firebrick'),
-                                       name = '') +
+            geom_point(shape = 21,
+                       size = point_size) +
+            scale_fill_manual(values = c(correct = 'steelblue',
+                                         misclassified = 'firebrick'),
+                              name = '') +
             cust_theme)
 
     if(hide_obs_labels & !flip) {
@@ -782,9 +782,9 @@
       sc_plots <-
         map(sc_plots,
             ~.x +
-              ggplot2::theme(axis.text.x = ggplot2::element_blank(),
-                             axis.ticks.x = ggplot2::element_blank(),
-                             panel.grid.major.x = ggplot2::element_blank()))
+              theme(axis.text.x = element_blank(),
+                    axis.ticks.x = element_blank(),
+                    panel.grid.major.x = element_blank()))
 
     }
 
@@ -793,9 +793,9 @@
       sc_plots <-
         map(sc_plots,
             ~.x +
-              ggplot2::theme(axis.text.y = ggplot2::element_blank(),
-                             axis.ticks.y = ggplot2::element_blank(),
-                             panel.grid.major.y = ggplot2::element_blank()))
+              theme(axis.text.y = element_blank(),
+                    axis.ticks.y = element_blank(),
+                    panel.grid.major.y = element_blank()))
 
     }
 
@@ -804,9 +804,9 @@
       sc_plots <-
         map(sc_plots,
             ~.x +
-              ggrepel::geom_text_repel(aes(label = plot_lab),
-                                       size = txt_size,
-                                       color = txt_color))
+              geom_text_repel(aes(label = plot_lab),
+                              size = txt_size,
+                              color = txt_color))
 
     }
 
@@ -825,7 +825,7 @@
                                point_wjitter = 0.1,
                                point_alpha = 0.75,
                                box_alpha = 0.5,
-                               cust_theme = ggplot2::theme_classic()) {
+                               cust_theme = theme_classic()) {
 
     ## entry control -------
 
@@ -899,20 +899,20 @@
                                               aes(x = .outcome,
                                                   y = .data[[var]],
                                                   fill = .outcome)) +
-             ggplot2::geom_boxplot(alpha = box_alpha,
-                                   outlier.color = NA) +
-             ggplot2::geom_point(shape = 21,
-                                 size = point_size,
-                                 alpha = point_alpha,
-                                 color = 'black',
-                                 position = ggplot2::position_jitter(width = point_wjitter,
-                                                                     height = point_hjitter)) +
-             ggplot2::scale_x_discrete(labels = x_labs) +
+             geom_boxplot(alpha = box_alpha,
+                          outlier.color = NA) +
+             geom_point(shape = 21,
+                        size = point_size,
+                        alpha = point_alpha,
+                        color = 'black',
+                        position = position_jitter(width = point_wjitter,
+                                                   height = point_hjitter)) +
+             scale_x_discrete(labels = x_labs) +
              cust_theme +
-             ggplot2::labs(title = title,
-                           y = y_lab,
-                           subtitle = plot_subtitle,
-                           tag = plot_tag))
+             labs(title = title,
+                  y = y_lab,
+                  subtitle = plot_subtitle,
+                  tag = plot_tag))
 
     set_names(box_plots,
               c('square_dist', 'winner_p'))

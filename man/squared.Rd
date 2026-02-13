@@ -26,18 +26,20 @@ and predicted class assignment, respectively, and \code{square_dist} with the
 squared distance from the outcome.
 }
 \description{
-Calculates square distances from the true outcome, i.e. squared differences
-between the outcome and fitted class probability as defined in the formula
-of the Brier score.
+Calculates squared distances from the true outcome, i.e. squared differences
+between the 0/1 dummy-coded outcome and fitted class probability
+as defined in the formula of the Brier score.
 }
 \details{
-The sum of squared distances between fitted and outcome over
-all observations is the Brier score, which ranges from 0 to 1 for binary
+The squares can be interpreted as squared errors of classification models.
+The sum of squared distances between fitted and true outcome over
+all observations amounts to the Brier score, which ranges from 0 to 1 for binary
 classification models and from 0 to 2 for multi-class classifiers.
 In each case, 0 indicates a perfect concordance, while 1 or 2
 (binary or multi level) hallmarks a completely false prediction.
 For regression, squared working residuals are returned.
 \code{squared()} is a S3 generic function.
+For regression models, squared residuals are returned.
 }
 \references{
 Brier GW. VERIFICATION OF FORECASTS EXPRESSED IN TERMS OF PROBABILITY.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/caretx_oop.R
 \name{predict.caretx}
 \alias{predict.caretx}
-\title{Predict the outcome for a caretx model.}
+\title{Predict the outcome for a \code{caretx} model.}
 \usage{
 \method{predict}{caretx}(object, newdata = NULL, plain = FALSE, ...)
 }
@@ -17,12 +17,12 @@
 }
 \value{
 a list of \code{\link{predx}} objects containing the predictions
-for the training, resample (CV) and test data sets along with
+for the training, re-sample (CV, out-of-fold) and test data sets, along with
 model and data set type information.
 See: \code{\link{components.predx}}, \code{\link{summary.predx}},
 \code{\link{residuals.predx}}, \code{\link{confusion.predx}}
 and \code{\link{plot.predx}} for useful methods for \code{predx} objects.
-If \code{plain} is set to TRUE a prediction data frame if plain is set to TRUE.
+If \code{plain} is set to TRUE a prediction data frame is returned.
 }
 \description{
 Predicts the outcome in train, cross-validation and, optionally,

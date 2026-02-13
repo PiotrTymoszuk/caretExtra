@@ -17,7 +17,7 @@ plot_class_p(
   label_misclassified = TRUE,
   txt_size = 2.75,
   txt_color = "firebrick",
-  cust_theme = ggplot2::theme_classic()
+  cust_theme = theme_classic()
 )
 
 plot_class_stats(
@@ -29,7 +29,7 @@ plot_class_stats(
   point_wjitter = 0.1,
   point_alpha = 0.75,
   box_alpha = 0.5,
-  cust_theme = ggplot2::theme_classic()
+  cust_theme = theme_classic()
 )
 }
 \arguments{
@@ -72,7 +72,7 @@ a list of ggplot graphics: one plot for squared distances
 (\code{square_dist}) and one plot for class assignment probabilities (\code{winner_p}).
 }
 \description{
-\code{plot_class_p}: This internally used function plots squared distances
+\code{plot_class_p}: This internal-use function plots squared distances
 to the outcome (as defined by Brier at al.) and class-assignment
 probabilities for the outcome classes as scatter plots.
 The correct/false class assignment is color-coded.

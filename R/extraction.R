@@ -28,7 +28,7 @@
 #' * `formula`: the model's formula
 #'
 #' * `resample`: a data frame with tuning fit stats in the model's
-#' resamples (e.g. CV folds)
+#' re-samples (e.g. CV folds)
 #'
 #' * `tuning`: a data frame with tuning results.
 #'
@@ -50,14 +50,14 @@
 #' * `n`: the complete case number
 #'
 #' * `n_classes`: number of observations in the true outcome and fitted classes.
-#' NULL for regression models.
+#' `NULL` for regression models.
 #'
 #' * `residuals`: model fit residuals
 #'
 #' * `confusion`: computes the confusion matrix with observation counts
 #'
 #' @param newdata test data set required for making predictions.
-#' NULL by default, used only if `what` is set to `prediction`.
+#' `NULL` by default, used only if `what` is set to `prediction`.
 #' @param ... additional arguments passed to the specific methods.
 #'
 #' @return the requested feature.
@@ -156,14 +156,14 @@
 #' expected normal distribution values for the standardized residuals
 #' and the true outcome.
 #' Potential outliers are identified by the two-SD criterion.
-#' Returns NULL for multi-class models.
+#' Returns `NULL` for multi-class models.
 #'
 #' @param object \code{\link{caretx}} model or
 #' \code{\link{predx}} prediction object.
 #' @param newdata test data set.
 #' @param ... extra arguments, currently none.
 #'
-#' @return a list of data frames for the test, resample (CV) and
+#' @return a list of data frames for the test, re-sample (CV, out-of-fold) and
 #' training data set prediction with residuals and potential outliers.
 #'
 #' @export residuals.caretx
@@ -213,7 +213,7 @@
 #' `confusion()` is a S3 generic function.
 #'
 #' @param x \code{\link{caretx}} model or \code{\link{predx}} prediction object.
-#' @param newdata newdata test data set.
+#' @param newdata test data set.
 #' @param scale indicates, how the table is to be scaled:
 #'
 #' * `none`: returns the counts (default)
@@ -225,8 +225,8 @@
 #' @param ... extra arguments passed to methods.
 #'
 #' @return a list of table object storing the confusion matrices (`caretx`)
-#' or a single table bject representing the confusion matrix  (`predx`).
-#' For regression models NULL and a warning is generated.#
+#' or a single table object representing the confusion matrix  (`predx`).
+#' For regression models `NULL` and a warning is generated.
 #'
 #' @export
 
@@ -267,7 +267,8 @@
 
     if(x$type == 'regression') {
 
-      warning('Confusion matrix for regression predictions is not available.', call. = FALSE)
+      warning('Confusion matrix for regression predictions is not available.',
+              call. = FALSE)
 
       return(NULL)
 
@@ -291,15 +292,16 @@
 #'
 #' @details
 #' Returns NULL for regression models and predictions and throws a warning.
-#' The `classp` is a S3 generic function.
+#' The `classp()` is a S3 generic function.
 #'
 #' @return For `predx` objects, a data frame with
 #' the columns `.outcome` and `.fitted` representing the true outcome
 #' and predicted class assignment, respectively, columns storing class
-#' assignment probabilities as welll as the `winner_p` variable storing
+#' assignment probabilities as well as the `winner_p` variable storing
 #' the probability for the predicted class.
 #' For `caretx` models, the function returns a list of tibbles described above,
-#' each one for the training, resample (CV) and test data sets.
+#' each one for the training, re-sample (CV, out-of-fold predictions)
+#' and test data sets.
 #'
 #' @param x \code{\link{caretx}} model or \code{\link{predx}} prediction object.
 #' @param newdata test data set (optional).
@@ -387,17 +389,20 @@
 #' Square distances from the outcome.
 #'
 #' @description
-#' Calculates square distances from the true outcome, i.e. squared differences
-#' between the outcome and fitted class probability as defined in the formula
-#' of the Brier score.
+#' Calculates squared distances from the true outcome, i.e. squared differences
+#' between the 0/1 dummy-coded outcome and fitted class probability
+#' as defined in the formula of the Brier score.
 #'
-#' @details The sum of squared distances between fitted and outcome over
-#' all observations is the Brier score, which ranges from 0 to 1 for binary
+#' @details
+#' The squares can be interpreted as squared errors of classification models.
+#' The sum of squared distances between fitted and true outcome over
+#' all observations amounts to the Brier score, which ranges from 0 to 1 for binary
 #' classification models and from 0 to 2 for multi-class classifiers.
 #' In each case, 0 indicates a perfect concordance, while 1 or 2
 #' (binary or multi level) hallmarks a completely false prediction.
 #' For regression, squared working residuals are returned.
 #' `squared()` is a S3 generic function.
+#' For regression models, squared residuals are returned.
 #'
 #' @return For `predx` objects, a data frame with
 #' the columns `.outcome` and `.fitted` representing the true outcome
@@ -462,9 +467,7 @@
     if(x$type == 'multi_class') {
 
       outcomes_num <-
-        as.data.frame(DescTools::Dummy(pred_data[['.outcome']],
-                                       method = 'full',
-                                       levels = x$classes))
+        as.data.frame(dummy_(pred_data[['.outcome']]))
 
       fitted_num <- pred_data[x$classes]
 

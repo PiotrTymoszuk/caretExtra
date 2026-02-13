@@ -23,15 +23,16 @@ classp(x, ...)
 For \code{predx} objects, a data frame with
 the columns \code{.outcome} and \code{.fitted} representing the true outcome
 and predicted class assignment, respectively, columns storing class
-assignment probabilities as welll as the \code{winner_p} variable storing
+assignment probabilities as well as the \code{winner_p} variable storing
 the probability for the predicted class.
 For \code{caretx} models, the function returns a list of tibbles described above,
-each one for the training, resample (CV) and test data sets.
+each one for the training, re-sample (CV, out-of-fold predictions)
+and test data sets.
 }
 \description{
 Computes the class assignment probability for classification models.
 }
 \details{
 Returns NULL for regression models and predictions and throws a warning.
-The \code{classp} is a S3 generic function.
+The \code{classp()} is a S3 generic function.
 }

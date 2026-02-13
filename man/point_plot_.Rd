@@ -18,7 +18,7 @@ point_plot_(
   point_alpha = 0.75,
   smooth = TRUE,
   silent = TRUE,
-  cust_theme = ggplot2::theme_classic(),
+  cust_theme = theme_classic(),
   ...
 )
 }

@@ -8,7 +8,7 @@
 #' Calculates working residuals (`get_resids()`),
 #' variance of the outcome (`get_var()`),
 #' fir errors based on MSE and outcome variance
-#' (`get_errors()`: MAE, MSE, RMSE and pseudo-R-squared),
+#' (`get_errors()`: MAE, MSE, RMSE and R-squared),
 #' and correlation between the outcome and fitted values
 #' (`get_correlations()`: Pearson, Spearman and Kendal TauB).
 #'
@@ -33,7 +33,7 @@
 
     stopifnot(all(c('.outcome', '.fitted') %in% names(data)))
 
-    stats::var(data[['.outcome']])
+    var(data[['.outcome']])
 
   }
 
@@ -44,9 +44,12 @@
     stopifnot(all(c('.outcome', '.fitted') %in% names(data)))
 
     resamplCor <-
-      try(stats::cor(data[['.outcome']], data[['.fitted']],
-                     use = 'pairwise.complete.obs'),
+      try(cor(data[['.outcome']],
+              data[['.fitted']],
+              use = 'pairwise.complete.obs'),
           silent = TRUE)
+
+    if(inherits(resamplCor, 'try-error')) resamplCor <- NULL
 
     resids <- get_resids(data)
 
@@ -74,15 +77,24 @@
     ## as constant values predicted will result in
     ## correlation errors as well.
 
+    ## when confidence intervals are requested, they're computed from
+    ## distribution of the T statistic for Pearson's and Spearman's correlations
+
     correlations <-
-      list(pearson = function(x, y) stats::cor.test(x, y, method = 'pearson', conf.level = 0.95),
-           spearman = function(x, y) DescTools::SpearmanRho(x, y, conf.level = if(ci) 0.95 else NA),
-           kendall = function(x, y) c(stats::cor(x, y, method = 'kendall'), NA, NA))
+      list(pearson = function(x, y) cor.test(x, y,
+                                             method = 'pearson',
+                                             conf.level = 0.95),
+           spearman = function(x, y) cor.test(rank(x), rank(y),
+                                              method = 'pearson',
+                                              conf.level = 0.95),
+           kendall = function(x, y) c(cor(x, y,
+                                          method = 'kendall'),
+                                      NA, NA))
 
     correlations <- map(correlations,
                         ~safely(.x)(data[['.outcome']], data[['.fitted']]))
 
-    correlations <- purrr::transpose(correlations)$result
+    correlations <- transpose(correlations)$result
 
     if(!is.null(correlations$pearson)) {
 
@@ -95,6 +107,20 @@
       correlations$pearson <- c(rho = NA,
                                 lwr.ci = NA,
                                 lwr.ci = NA)
+
+    }
+
+    if(!is.null(correlations$spearman)) {
+
+      correlations$spearman <- c(rho = correlations$spearman$estimate,
+                                 lwr.ci = correlations$spearman$conf.int[1],
+                                 lwr.ci = correlations$spearman$conf.int[2])
+
+    } else {
+
+      correlations$spearman <- c(rho = NA,
+                                 lwr.ci = NA,
+                                 lwr.ci = NA)
 
     }
 
@@ -139,7 +165,7 @@
                            obs = factor(.outcome, rev(classes))))
 
     roc_res <-
-      caret::multiClassSummary(roc_res, lev = rev(classes))
+      multiClassSummary(roc_res, lev = rev(classes))
 
     tibble(statistic = c('log_loss',
                          'AUC',
@@ -174,7 +200,7 @@
 
     stopifnot(all(c('.outcome', '.fitted') %in% names(data)))
 
-    c_object <- survival::concordance(.outcome ~ .fitted, data = data)
+    c_object <- concordance(.outcome ~ .fitted, data = data)
 
     tibble(statistic = 'c_index',
            estimate = c_object$concordance,
@@ -302,7 +328,7 @@
                   class_p_fitted = weighted.mean(.x[['winner_p']],
                                                  .x[['fitted_wt']])))
 
-      wt_res <- purrr::transpose(wt_res)
+      wt_res <- transpose(wt_res)
 
       wt_res <- map(wt_res, unlist)
 
@@ -311,7 +337,7 @@
       wt_means <- map2_dfr(wt_means, names(wt_means),
                            ~mutate(.x, statistic = .y))
 
-      wt_means <- dplyr::relocate(wt_means, statistic)
+      wt_means <- relocate(wt_means, statistic)
 
     }
 
@@ -367,7 +393,7 @@
 
     }
 
-    stats::var(outcome)
+    var(outcome)
 
   }
 
@@ -433,7 +459,7 @@
 #' Calculate mean with 95% confidence interval
 #'
 #' @description
-#' Computes mean with 95% confidence interval.#'
+#' Computes mean with 95% confidence interval.
 #'
 #' @param vector a numeric vector.
 #' @param method the method used for calculation of 95% confidence interval.
@@ -448,10 +474,12 @@
 
     ci_vec <-
       switch(method,
-             norm = c(mean(vector, na.rm = TRUE) + stats::sd(vector, na.rm = TRUE) * stats::qnorm(0.025),
-                      mean(vector, na.rm = TRUE) + stats::sd(vector, na.rm = TRUE) * stats::qnorm(0.975)),
-             percentile = stats::quantile(vector, c(0.025, 0.975), na.rm = TRUE),
-             bca = coxed::bca(vector, conf.level = 0.95))
+             norm = c(mean(vector, na.rm = TRUE) +
+                        sd(vector, na.rm = TRUE) * qnorm(0.025),
+                      mean(vector, na.rm = TRUE) +
+                        sd(vector, na.rm = TRUE) * qnorm(0.975)),
+             percentile = quantile(vector, c(0.025, 0.975), na.rm = TRUE),
+             bca = bca(vector, conf.level = 0.95))
 
     stat_tbl <- as.list(set_names(ci_vec, c('lower_ci', 'upper_ci')))
 
@@ -507,6 +535,121 @@
              statistic = split_stats[[1]][['statistic']])
 
     summ_stats[c('statistic', 'estimate', 'lower_ci', 'upper_ci')]
+
+  }
+
+# BCA confidence intervals -----------
+
+#' Bias-corrected and accelerated (BCA) confidence intervals
+#'
+#' This function uses the method proposed by DiCiccio and Efron (1996) to
+#' compute so called bias-corrected and accelerated (BCA) confidence intervals.
+#' The code is a modified version of the code from
+#' https://github.com/jkropko/coxed/blob/master/R/bca.R by Jonathan Kropko and
+#' colleagues and used by the no-more CRAN package coxed.
+#'
+#' @param theta a numeric vector of estimates obtained in bootstrap estimates.
+#' @param conf.level confidence interval. Defaults to 0.95.
+#'
+#' @details
+#' Any NAs are silently removed.
+#'
+#'
+#' @return returns a numeric vector of length 2 with the lower and upper bound
+#' of the confidence interval
+#'
+#' @author Jonathan Kropko <jkropko@@virginia.edu> and Jeffrey J. Harden <jharden@@nd.edu>, based
+#' on the code for the \code{\link[mediation]{mediate}} function in the \code{mediation} package
+#' by Dustin Tingley, Teppei Yamamoto, Kentaro Hirose, Luke Keele, and Kosuke Imai.
+#'
+#' @references DiCiccio, T. J. and B. Efron. (1996). Bootstrap Confidence Intervals. \emph{Statistical Science}.
+#' 11(3): 189–212. \url{https://doi.org/10.1214/ss/1032280214}
+
+  bca <- function(theta, conf.level = 0.95){
+
+    ## entry control ---------
+
+    stopifnot(is.numeric(theta))
+    stopifnot(is.numeric(conf.level))
+
+    theta <- theta[!is.na(theta)]
+
+    if(length(theta) < 2) {
+
+      stop("Not enough elements in the 'theta' vector", call. = FALSE)
+
+    }
+
+    conf.level <- conf.level[1]
+
+    if(var(theta) == 0){
+
+      ## handling of the special case, when all elements are equal
+
+      lower <- mean(theta)
+      upper <- mean(theta)
+
+      return(c(lower, upper))
+
+    }
+
+    if(any(is.infinite(theta))){
+
+      stop("bca() function does not work when some values are infinite",
+           call. = FALSE)
+
+    }
+
+    low <- (1 - conf.level)/2
+    high <- 1 - low
+
+    ## calculation of the CI
+
+    sims <- length(theta)
+
+    z.inv <- length(theta[theta < mean(theta)])/sims
+    z <- qnorm(z.inv)
+
+    U <- (sims - 1) * (mean(theta) - theta)
+
+    top <- sum(U^3)
+    under <- 6 * (sum(U^2))^{3/2}
+
+    a <- top / under
+
+    lower.inv <-  pnorm(z + (z + qnorm(low))/(1 - a * (z + qnorm(low))))
+    lower <- quantile(theta, lower.inv, names=FALSE)
+
+    upper.inv <-  pnorm(z + (z + qnorm(high))/(1 - a * (z + qnorm(high))))
+    upper <- quantile(theta, upper.inv, names=FALSE)
+
+    return(c(lower, upper))
+
+  }
+
+# Factor to a dummy matrix ----------
+
+#' Resolves a factor to a dummy matrix.
+#'
+#' @description
+#' Resolves a factor to a dummy matrix.
+#' The code is inspired by \code{\link[DescTools]{Dummy}}.
+#'
+#' @param x a factor.
+#'
+#' @return a numeric binary (0/1) matrix with dummy coding of the vector's levels.
+
+  dummy_ <- function(x) {
+
+    stopifnot(is.factor(x))
+
+    levs <- levels(x)
+
+    dummy_mat <- diag(length(levs))[x, , drop = FALSE]
+
+    colnames(dummy_mat) <- levs
+
+    dummy_mat
 
   }
 

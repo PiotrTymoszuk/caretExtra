@@ -62,7 +62,7 @@ vents if not specified by the user.}
 \item{...}{extra arguments passed to \code{\link[plotROC]{geom_roc}}.}
 }
 \value{
-returns a  ggplot object.
+returns a  \code{ggplot} object.
 }
 \description{
 Generates a ROC plot with for the fitted and outcome values.

@@ -23,7 +23,7 @@ plot_regression(
   plot_tag = NULL,
   x_lab = x_var,
   y_lab = y_var,
-  cust_theme = ggplot2::theme_classic(),
+  cust_theme = theme_classic(),
   ...
 )
 }
@@ -71,7 +71,7 @@ intercept 1 be displayed in the plot?}
 \item{...}{extra arguments passed to \code{\link[ggplot2]{geom_smooth}}.}
 }
 \value{
-returns a ggplot object.
+returns a \code{ggplot} object.
 }
 \description{
 Generates a point plot with for the fitted and outcome values for

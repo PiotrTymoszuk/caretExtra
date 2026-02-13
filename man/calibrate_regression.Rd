@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_calibration.R
 \name{calibrate_regression}
 \alias{calibrate_regression}
-\title{Calibrate a regression caretx model.}
+\title{Calibrate a regression \code{caretx} model.}
 \usage{
 calibrate_regression(
   caretx_model,

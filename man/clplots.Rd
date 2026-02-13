@@ -25,7 +25,7 @@ model.}
 \value{
 a single \code{ggplot} object or a list of \code{ggplot} objects.
 For \code{clplots.caretex} a list of \code{ggplots} with plots for the training data,
-resamples and, if \code{newdata} is specified, also for the test data set.
+re-samples and, if \code{newdata} is specified, also for the test data set.
 }
 \description{
 Draws receiver operating characteristic (ROC) plots for particular outcome

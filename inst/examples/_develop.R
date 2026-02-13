@@ -1,10 +1,17 @@
+# Tests during development
+
+  library(tidyverse)
 
   library(caret)
   library(caretExtra)
 
+  library(doParallel)
+
 # Development and testing stuff -----
 
-  testControl <- caret::trainControl(method = 'repeatedcv',
+  ## trainControl object specified as required for `caretx` objects
+
+  testControl <- trainControl(method = 'repeatedcv',
                                      number = 10,
                                      repeats = 5,
                                      returnData = TRUE,
@@ -12,19 +19,31 @@
                                      savePredictions = 'final',
                                      classProbs = TRUE)
 
-  devData_class <- tibble::as_tibble(MASS::biopsy)
-  devData_class <- dplyr::filter(devData_class, complete.cases(devData_class))
+  ## testing data for binary classification models
 
+  devData_class <- as_tibble(MASS::biopsy)
 
-  devData_corr <- tibble::as_tibble(MASS::birthwt)
-  devData_corr <- dplyr::filter(devData_corr, complete.cases(devData_corr))
+  devData_class <- devData_class %>%
+    filter(complete.cases(.))
 
-  devData_multi <- dplyr::mutate(mtcars,
-                                 .cyl = paste0('cyl_', cyl),
-                                 .cyl = factor(.cyl))
+  ## testing data for regression models
 
-  devData_multi <- dplyr::filter(devData_multi,
-                                 complete.cases(devData_multi))
+  devData_corr <- as_tibble(MASS::birthwt)
+
+  devData_corr <- devData_corr %>%
+    filter(complete.cases(.))
+
+  ## testing data for multi-class classifiers
+
+  devData_multi <- mtcars %>%
+    mutate(mtcars,
+           .cyl = paste0('cyl_', cyl),
+           .cyl = factor(.cyl))
+
+  devData_multi <- devData_multi %>%
+    filter(complete.cases(.))
+
+  ## definition of the training and test subsets of the data
 
   trainClassIDs <- sample(1:nrow(devData_class), 500, replace = FALSE)
   trainCorrIDs <- sample(1:nrow(devData_corr), 120, replace = FALSE)
@@ -39,6 +58,8 @@
   trainMulti <- devData_multi[trainMultiIDs, ]
   testMulti <- devData_multi[-trainMultiIDs, ]
 
+  ## model formulas
+
   class_form <- class ~ V1 + V2 + V3 + V4 + V5 + V6 + V7 + V8 + V9
 
   corr_form <- bwt ~ age + lwt + race + smoke + ptl + ht + ui + ftv
@@ -47,7 +68,7 @@
 
 # Development models -----
 
-  doParallel::registerDoParallel(cores = 7)
+  registerDoParallel(cores = 7)
 
   class_model <- caret::train(form = class_form,
                               data = trainClass,
@@ -55,19 +76,19 @@
                               metric = 'Kappa',
                               trControl = testControl)
 
-  corr_models <- caret::train(form = corr_form,
-                              data = trainCorr,
-                              method = 'rf',
-                              metric = 'MAE',
+  corr_model <- caret::train(form = corr_form,
+                             data = trainCorr,
+                             method = 'rf',
+                             metric = 'MAE',
+                             trControl = testControl)
+
+  multi_model <- caret::train(form = multi_form,
+                              data = trainMulti,
+                              method = 'nnet',
+                              metric = 'Kappa',
                               trControl = testControl)
 
-  multi_models <- caret::train(form = multi_form,
-                               data = trainMulti,
-                               method = 'nnet',
-                               metric = 'Kappa',
-                               trControl = testControl)
-
-  doParallel::stopImplicitCluster()
+  stopImplicitCluster()
 
 # testing the toolbox -----
 
@@ -139,6 +160,8 @@
 
   components(caretx_corr, newdata = testCorr, what = 'fit')
 
+  components(caretx_corr, newdata = testCorr, what = 'best_tune')
+
   ## plotting of the fitted values
 
   plot(x = test_corr_pred$test, type = 'regression')
@@ -153,23 +176,26 @@
        type = 'fit',
        newdata = testCorr,
        plot_title = c('Training', 'CV', 'Test'),
-       cust_theme = ggplot2::theme_light() + theme(plot.tag.position = 'bottom'))
+       cust_theme = theme_light() + theme(plot.tag.position = 'bottom'))
 
   plot(caretx_multi,
        type = 'fit',
        newdata = testMulti,
        plot_title = c('Training', 'CV', 'Test'),
-       cust_theme = ggplot2::theme_light() + theme(plot.tag.position = 'bottom'))
+       cust_theme = theme_light() + theme(plot.tag.position = 'bottom'))
 
   ## calibration
 
-  calibration(caretx_corr, qu = 0.5)
+  calibration(caretx_corr,
+              qu = 0.5,
+              k = 20,
+              bs = "cs")
 
   test_cal <- calibration(caretx_corr,
                           newdata = testCorr,
                           qu = c(0.2, 0.4, 0.6))
 
-  purrr::map(test_cal[c("train", "cv", "test")],
-             plot, 'fit')
+  map(test_cal[c("train", "cv", "test")],
+      plot, 'fit')
 
 # END ------

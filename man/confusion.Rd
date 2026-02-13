@@ -17,7 +17,7 @@ confusion(x, ...)
 
 \item{...}{extra arguments passed to methods.}
 
-\item{newdata}{newdata test data set.}
+\item{newdata}{test data set.}
 
 \item{scale}{indicates, how the table is to be scaled:
 \itemize{
@@ -28,8 +28,8 @@ confusion(x, ...)
 }
 \value{
 a list of table object storing the confusion matrices (\code{caretx})
-or a single table bject representing the confusion matrix  (\code{predx}).
-For regression models NULL and a warning is generated.#
+or a single table object representing the confusion matrix  (\code{predx}).
+For regression models \code{NULL} and a warning is generated.
 }
 \description{
 Creates a confusion matrix, valid only for binary and

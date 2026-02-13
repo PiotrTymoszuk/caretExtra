@@ -19,16 +19,18 @@ f be dropped?}
 \item{...}{extra arguments, currently none.}
 }
 \value{
-a plain list of \code{\link{predx}} objects.
+a plain list of \code{\link{predx}} objects named after levels of
+the splitting factor.
 }
 \description{
 The \code{split()} method for the \code{\link{caretx}} class generates predictions
-for the training, resample (CV) and, optionally, test data set and splits
-them by the levels of an explanatory factor present in the training data.
+for the training, re-sample (CV, out-of-fold) and, optionally, test data set
+and splits them by the levels of an explanatory factor present
+in the training data.
 }
 \details{
 This method may be used to investigate quality of prediction in a particular
-subset or subsets of the data set. The method returns a plain list of
+subset or subsets of the modeling data. The method returns a plain list of
 \code{\link{predx}} objects, whose properties can be further explored
 with the specific \code{\link{summary.predx}} and \code{\link{plot.predx}}
 methods.

@@ -6,7 +6,7 @@
 \usage{
 get_qc_plots(
   predx_object,
-  cust_theme = ggplot2::theme_classic(),
+  cust_theme = theme_classic(),
   point_wjitter = 0.01,
   point_hjitter = 0.01,
   point_alpha = 0.75

@@ -45,7 +45,7 @@ see: \code{\link[qgam]{qgam}} for details.}
 
 \item{form}{optional GAM formula as specified by
 \code{\link[mgcv]{formula.gam}}. The uncalibrated predictions are stored
-internally in the '.raw' variable, which needs to be included in the
+internally in the \code{.raw} variable, which needs to be included in the
 user-provided formula.}
 
 \item{lsig}{the value of the log learning rate used to create the
@@ -62,13 +62,15 @@ see: \code{\link[qgam]{qgam}} for details.}
 
 \item{...}{extra arguments passed to \code{\link[qgam]{qgam}}.}
 
-\item{newdata}{a data frame with the test data.#'}
+\item{newdata}{a data frame with the test data.}
 }
 \value{
 A list with the \code{predx} object
-(.raw stores the uncalibrated predctions, .fitted stores the calibrated
-predictions) along with the gamObject named \code{cal_fit},
-the chosen quantile value (\code{qu}) and values of explained deviance (\code{qu_tbl}).
+(\code{.raw} variable stores the uncalibrated predctions,
+\code{.fitted} stores the calibrated predictions) along with the
+GAM model named \code{cal_fit},
+the chosen quantile value (\code{qu}),
+and values of explained deviance (\code{qu_tbl}).
 }
 \description{
 Enables post-hoc quantile GAM calibration of the regression predictions
@@ -77,6 +79,6 @@ and models using the \code{\link[qgam]{qgam}} tool.
 \details{
 Currently, only quantile calibration for regression \code{predx} and \code{caretx}
 objects is implemented. If a vector of quantiles is provided, the optimal
-one is choosen based on the minimum RMSE
+one is chosen based on the minimum RMSE
 (more formal criteria are in development).
 }

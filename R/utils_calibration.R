@@ -1,6 +1,6 @@
 # Provides calibration tools.
 
-#' Calibrate a regression caretx model.
+#' Calibrate a regression `caretx` model.
 #'
 #' @description
 #' Enables post-hoc quantile GAM calibration of the ML predictions using the
@@ -64,7 +64,7 @@
     stopifnot(is.numeric(k))
     stopifnot(is.numeric(qu))
 
-    if(!is.null(form) & !rlang::is_formula(form)) {
+    if(!is.null(form) & !is_formula(form)) {
 
       stop('form needs to be a formula.', call = FALSE)
 

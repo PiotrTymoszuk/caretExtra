@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils_plotting.R
 \name{plot_confusion}
 \alias{plot_confusion}
-\title{Plot confusion matrix for a classification predx object.}
+\title{Plot confusion matrix for a classification \code{predx} object.}
 \usage{
 plot_confusion(
   predx_object,
@@ -16,7 +16,7 @@ plot_confusion(
   plot_tag = NULL,
   x_lab = ".outcome",
   y_lab = ".fitted",
-  cust_theme = ggplot2::theme_classic()
+  cust_theme = theme_classic()
 )
 }
 \arguments{
@@ -50,7 +50,7 @@ observation number if not specified.}
 \item{cust_theme}{customized plot theme provided by the user.}
 }
 \value{
-returns a ggplot object.
+returns a \code{ggplot} object.
 }
 \description{
 Generates a heat map representation of the confusion matrix.

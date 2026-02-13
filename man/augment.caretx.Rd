@@ -23,6 +23,6 @@ as well (columns named after levels of the \code{.outcome} variable).
 }
 \description{
 The \code{augment()} method for \code{\link{caretx}} objects derives the
-predictions for the training, resample (CV), and, optionally, test
-data set appended with the explanatory variables.
+predictions for the training, re-sample (CV, out-of-fold), and, optionally,
+test data set appended with the explanatory variables.
 }

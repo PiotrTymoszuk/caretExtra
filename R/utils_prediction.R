@@ -84,7 +84,7 @@
                    .fitted = pred,
                    .resample = Resample)
 
-    data <- dplyr::arrange(data, .observation)
+    data <- arrange(data, .observation)
     data <- as_tibble(data)
 
     predx(data = data[c('.observation',
@@ -120,7 +120,7 @@
                    .fitted = pred,
                    .resample = Resample)
 
-    data <- dplyr::arrange(data, .observation)
+    data <- arrange(data, .observation)
     data <- as_tibble(data)
 
     predx(data = data[c('.observation',
@@ -163,7 +163,6 @@
           classes = names(preds$probs),
           type = if(ncol(preds$probs) == 2) 'binary' else 'multi_class',
           prediction = 'test')
-
 
   }
 

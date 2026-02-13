@@ -73,11 +73,11 @@
 
     ## outcome class-specific stats ------
 
-    class_data <- dplyr::group_by(class_data, .outcome)
+    class_data <- group_by(class_data, .outcome)
 
-    dplyr::summarise(class_data,
-                     brier_score = mean(square_dist, na.rm = TRUE),
-                     class_p = mean(winner_p, na.rm = TRUE))
+    summarise(class_data,
+              brier_score = mean(square_dist, na.rm = TRUE),
+              class_p = mean(winner_p, na.rm = TRUE))
 
   }
 
@@ -127,7 +127,7 @@
       class_lst[[i]] <- as.data.frame(class_lst[[i]][c('obs', 'pred')])
 
       stat_lst[[i]] <-
-        caret::multiClassSummary(class_lst[[i]], lev = c(i, 'rest'))
+        multiClassSummary(class_lst[[i]], lev = c(i, 'rest'))
 
     }
 
@@ -139,7 +139,7 @@
     stat_lst <- map2_dfr(stat_lst, names(stat_lst),
                          ~mutate(.x, .outcome = .y))
 
-    stat_lst <- dplyr::relocate(stat_lst, .outcome)
+    stat_lst <- relocate(stat_lst, .outcome)
 
     stat_lst <- set_names(stat_lst,
                           c('.outcome',
@@ -229,7 +229,7 @@
 
     if(is.null(palette)) {
 
-      palette <- scales::hue_pal()(length(classes))
+      palette <- hue_pal()(length(classes))
 
     }
 
@@ -297,7 +297,7 @@
                                                  ', BS = ',
                                                  signif(brier_score, 2)))
 
-      roc_stats <- dplyr::arrange(roc_stats, class)
+      roc_stats <- arrange(roc_stats, class)
 
     }
 
@@ -344,7 +344,7 @@
     if(one_plot) {
 
       roc_stats <-
-        dplyr::arrange(roc_stats, dplyr::desc(class))
+        arrange(roc_stats, desc(class))
 
       if(is.null(plot_subtitle)) {
 
@@ -356,28 +356,28 @@
                          aes(d = .data[['.outcome']],
                              m = .data[['.fitted']],
                              color = .data[['class']])) +
-        plotROC::geom_roc(pointsize = point_size,
-                          size = line_size,
-                          cutoffs.at = 1,
-                          labels = FALSE, ...) +
-        ggplot2::geom_text(data = roc_stats,
-                           aes(x = x_pos,
-                               y = y_pos,
-                               color = class,
-                               label = plot_txt),
-                           size = annotation_size,
-                           hjust = annotation_hjust,
-                           vjust = annotation_vjust,
-                           show.legend = FALSE) +
-        ggplot2::scale_color_manual(values = palette,
-                                    name = '') +
-        plotROC::style_roc() +
-        ggplot2::geom_abline(slope = 1,
-                             intercept = 0,
-                             linetype = 'dashed') +
-        ggplot2::labs(title = plot_title,
-                      subtitle = plot_subtitle,
-                      tag = plot_tag)
+        geom_roc(pointsize = point_size,
+                 size = line_size,
+                 cutoffs.at = 1,
+                 labels = FALSE, ...) +
+        geom_text(data = roc_stats,
+                  aes(x = x_pos,
+                      y = y_pos,
+                      color = class,
+                      label = plot_txt),
+                  size = annotation_size,
+                  hjust = annotation_hjust,
+                  vjust = annotation_vjust,
+                  show.legend = FALSE) +
+        scale_color_manual(values = palette,
+                           name = '') +
+        style_roc() +
+        geom_abline(slope = 1,
+                    intercept = 0,
+                    linetype = 'dashed') +
+        labs(title = plot_title,
+             subtitle = plot_subtitle,
+             tag = plot_tag)
 
       return(roc_plot)
 
@@ -392,33 +392,33 @@
              function(x, y, z, v, w) ggplot(x,
                                             aes(d = .data[['.outcome']],
                                                 m = .data[['.fitted']])) +
-               plotROC::geom_roc(pointsize = point_size,
-                                 size = line_size,
-                                 cutoffs.at = 1,
-                                 labels = FALSE,
-                                 color = y, ...) +
-               plotROC::style_roc() +
-               ggplot2::geom_abline(slope = 1,
-                                    intercept = 0,
-                                    linetype = 'dashed') +
-               ggplot2::labs(title = z,
-                             subtitle = v,
-                             tag = paste0('total: n = ', nobs(predx_object),
-                                          ', ', w)))
+               geom_roc(pointsize = point_size,
+                        size = line_size,
+                        cutoffs.at = 1,
+                        labels = FALSE,
+                        color = y, ...) +
+               style_roc() +
+               geom_abline(slope = 1,
+                           intercept = 0,
+                           linetype = 'dashed') +
+               labs(title = z,
+                    subtitle = v,
+                    tag = paste0('total: n = ', nobs(predx_object),
+                                 ', ', w)))
 
       roc_plots <-
         pmap(list(x = roc_plots,
                   y = roc_stats$plot_txt,
                   z = palette),
              function(x, y, z) x +
-               ggplot2::annotate('text',
-                                 label = y,
-                                 x = annotation_x,
-                                 y = annotation_y,
-                                 hjust = annotation_hjust,
-                                 vjust = annotation_vjust,
-                                 size = annotation_size,
-                                 color = z))
+               annotate('text',
+                        label = y,
+                        x = annotation_x,
+                        y = annotation_y,
+                        hjust = annotation_hjust,
+                        vjust = annotation_vjust,
+                        size = annotation_size,
+                        color = z))
 
       return(roc_plots)
 

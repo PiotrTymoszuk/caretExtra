@@ -20,7 +20,7 @@ prediction object.}
 \value{
 a data frame with the class names and numbers of observations
 in the outcome and fitted classes (\code{predx}) or a list of such data frames
-for the training, resample (CV) and test datasets.
+for the training, re-sample (CV, out-of-fold predictions) and test data sets.
 }
 \description{
 Computes the number of observation in the outcome an predicted classes.

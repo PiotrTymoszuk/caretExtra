@@ -5,12 +5,13 @@
 \alias{summary.caretx}
 \title{Fit statistic summary .}
 \usage{
-\method{summary}{predx}(object, ci_method = c("percentile", "bca", "norm"), ...)
+\method{summary}{predx}(object, ci_method = c("percentile", "bca", "norm"), wide = FALSE, ...)
 
 \method{summary}{caretx}(
   object,
   newdata = NULL,
   ci_method = c("percentile", "bca", "norm"),
+  wide = FALSE,
   plain = FALSE,
   ...
 )
@@ -21,13 +22,17 @@ object.}
 
 \item{ci_method}{method used for calculation of 95\\% CI for the CV folds:
 normal distribution, percentile or BCA (\code{\link[coxed]{bca}}).
-Defaults to 'percentile'.}
+Defaults to 'percentile'. Ignored if \code{wide = TRUE}.}
+
+\item{wide}{logical, should the stats be presented in a wide format?
+If \code{TRUE}, no confidence intervals are displayed.}
 
 \item{...}{extra arguments, currently none.}
 
 \item{newdata}{optional, a data frame with the test data.}
 
-\item{plain}{logical, should the output be coerced to a single data frame?}
+\item{plain}{logical, should the output be coerced to a single data frame
+with performance stats for training, CV and, optionally, test data?}
 }
 \value{
 a data frame with the fit summary statistic (\code{predx}) or
@@ -39,7 +44,7 @@ Calculates fit statistics for models (\code{\link{caretx}}) and
 predictions (\code{\link{predx}}).
 For regression, those include the fit errors and outcome - fitted value
 correlations.
-For binary classification, concordance (C-index), kappa, accuracy,
+For binary classification, concordance (C-index), kappa, accuracy, log-loss,
 receiver-operator characteristic (ROC), weighted average class probabilities
 and Brier scores are returned.
 For multiple-class predictions and models, accuracy, kappa, weighted average
@@ -55,8 +60,8 @@ Fit errors are based on working residuals and include
 mean absolute error (MAE),
 mean squared error (MSE) and root-MSE (RMSE).
 Pseudo R squared is calculated as 1 - MSE/Var(y).
-Pearson correlation is obtained with \code{\link[stats]{cor.test}},
-Spearman correlation is computed with \code{\link[DescTools]{SpearmanRho}},
+Pearson's correlation is obtained with \code{\link[stats]{cor.test}},
+Spearman's correlation is computed with \code{\link[DescTools]{SpearmanRho}},
 Kendall's TauB is obtained with \code{\link[stats]{cor}}.
 For cross-validation (CV) prediction, statistic values are calculated as
 mean across the CV with 95\\% confidence intervals (CI).

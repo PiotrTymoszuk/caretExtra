@@ -3,28 +3,32 @@
 \name{predx}
 \alias{predx}
 \alias{is_predx}
-\title{Create a predx object.}
+\title{Create a \code{predx} object.}
 \usage{
 predx(
   data,
   classes = NULL,
   type = c("regression", "binary", "multi_class"),
-  prediction = c("train", "cv", "test")
+  prediction = c("train", "cv", "test"),
+  calibrator_fun = NULL
 )
 
 is_predx(x)
 }
 \arguments{
 \item{data}{a data frame with predictions, the
-columns .outcome and .fitted are obligatory.}
+columns \code{.outcome} and \code{.fitted} are obligatory.}
 
-\item{classes}{an optional character vector with class names.}
+\item{classes}{an character vector with class names, required only
+for binary and multi-class classification models.}
 
 \item{type}{model type (\code{regression}, \code{binary} or \code{multi_class}).}
 
 \item{prediction}{type of prediction (\code{training}, \code{cv} or \code{test}).}
 
-\item{x}{an object.}
+\item{calibrator_fun}{optional and experimental, a function that takes the
+data frame provided as \code{data} argument and returns calibrated predictions in
+a data frame with the same format as \code{data}.}
 }
 \value{
 a \code{predx} object; \code{is_predx()} returns a logical value.
@@ -33,7 +37,7 @@ a \code{predx} object; \code{is_predx()} returns a logical value.
 Creates a \code{predx} object storing extended predictions of
 \code{\link{caretx}} models with information
 concerning model type, class number and the type of prediction
-(training, cross-validation or test).
+(training, cross-validation, or test).
 }
 \details{
 The \code{type} argument describes the prediction type:

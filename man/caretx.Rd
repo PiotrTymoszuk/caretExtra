@@ -4,7 +4,7 @@
 \alias{caretx}
 \alias{as_caretx}
 \alias{is_caretx}
-\title{Create a caretx object.}
+\title{Create a \code{caretx} object.}
 \usage{
 caretx(caret_model)
 
@@ -25,19 +25,21 @@ Converts a caret model (class \code{\link[caret]{train}}) to
 a \code{caretx} object.
 }
 \details{
+Several parameters need to be set to enable conversion of a caret model
+to a \code{caretx} object; they are done by providing a \code{\link[caret]{trainControl}}
+object to \code{\link[caret]{train}} function.
 The input caret model has to contain a table with the final model
-predictions
-(\code{\link[caret]{trainControl}}, savePredictions = 'final'),
-training data (\code{\link[caret]{trainControl}}, returnData  = TRUE)
-and final model resamples raining data (\code{\link[caret]{trainControl}},
-returnResamp = 'final').
+predictions (\code{trainControl(savePredictions = 'final')}),
+training data (\code{trainControl(returnData  = TRUE)})
+and final model re-sample data (\code{trainControl(returnResamp = 'final')}).
 For classification models, the final model probabilities need to be provided
-(\code{\link[caret]{trainControl}}, classProbs = TRUE).
-Currently designed to work only with cross-validated models (\code{\link[caret]{trainControl}},
-method = 'cv' or 'repeatedcv'), generated with a formula.
+(\code{trainControl(classProbs = TRUE)}).
+Currently designed to work only with cross-validated models
+(\code{trainControl(method = 'cv')} or \code{trainControl(method = 'cv')}) generated
+with a formula.
 Of note, in case of binary classifiers, the 'positive' outcome is
 defined by the second level of the outcome variable.
-I.e. if \verb{outcome <- factor(x, c('a', 'b')}, the level \code{b} is considered as
+I.e. if \code{outcome <- factor(x, c('a', 'b'))}, the level \code{b} is considered as
 the event of interest.
 }
 \references{

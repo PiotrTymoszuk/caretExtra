@@ -27,7 +27,7 @@ a numeric vector of residuals or a tibble with statistic values.
 Calculates working residuals (\code{get_resids()}),
 variance of the outcome (\code{get_var()}),
 fir errors based on MSE and outcome variance
-(\code{get_errors()}: MAE, MSE, RMSE and pseudo-R-squared),
+(\code{get_errors()}: MAE, MSE, RMSE and R-squared),
 and correlation between the outcome and fitted values
 (\code{get_correlations()}: Pearson, Spearman and Kendal TauB).
 }

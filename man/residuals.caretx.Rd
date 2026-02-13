@@ -18,7 +18,7 @@
 \item{...}{extra arguments, currently none.}
 }
 \value{
-a list of data frames for the test, resample (CV) and
+a list of data frames for the test, re-sample (CV, out-of-fold) and
 training data set prediction with residuals and potential outliers.
 }
 \description{
@@ -31,5 +31,5 @@ In addition, squared and standardized residuals are returned along with
 expected normal distribution values for the standardized residuals
 and the true outcome.
 Potential outliers are identified by the two-SD criterion.
-Returns NULL for multi-class models.
+Returns \code{NULL} for multi-class models.
 }

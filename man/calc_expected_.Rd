@@ -16,7 +16,7 @@ A data frame with the extra variable .expect.norm with
 the expected normal distribution values
 }
 \description{
-Calclate expected values from the normal distribution.
+Calculate expected values from the normal distribution.
 }
 \details{
 credits to:

@@ -94,7 +94,7 @@
     correlations <- map(correlations,
                         ~safely(.x)(data[['.outcome']], data[['.fitted']]))
 
-    correlations <- transpose(correlations)$result
+    correlations <- list_transpose(correlations)$result
 
     if(!is.null(correlations$pearson)) {
 
@@ -328,7 +328,7 @@
                   class_p_fitted = weighted.mean(.x[['winner_p']],
                                                  .x[['fitted_wt']])))
 
-      wt_res <- transpose(wt_res)
+      wt_res <- list_transpose(wt_res)
 
       wt_res <- map(wt_res, unlist)
 
@@ -552,7 +552,8 @@
 #' @param conf.level confidence interval. Defaults to 0.95.
 #'
 #' @details
-#' Any NAs are silently removed.
+#' Any NAs are silently removed. If there are not enough observations in
+#' the `theta` vector, `NA` values are returned with a warning.
 #'
 #'
 #' @return returns a numeric vector of length 2 with the lower and upper bound
@@ -576,7 +577,9 @@
 
     if(length(theta) < 2) {
 
-      stop("Not enough elements in the 'theta' vector", call. = FALSE)
+      warning("Not enough elements in the 'theta' vector", call. = FALSE)
+
+      return(c(NA, NA))
 
     }
 

@@ -48,7 +48,7 @@
 #' @importFrom purrr map_dfr
 #' @importFrom purrr map_chr
 #' @importFrom purrr safely
-#' @importFrom purrr transpose
+#' @importFrom purrr list_transpose
 #'
 #' @importFrom tibble tibble
 #' @importFrom tibble as_tibble

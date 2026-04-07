@@ -23,7 +23,8 @@ https://github.com/jkropko/coxed/blob/master/R/bca.R by Jonathan Kropko and
 colleagues and used by the no-more CRAN package coxed.
 }
 \details{
-Any NAs are silently removed.
+Any NAs are silently removed. If there are not enough observations in
+the \code{theta} vector, \code{NA} values are returned with a warning.
 }
 \references{
 DiCiccio, T. J. and B. Efron. (1996). Bootstrap Confidence Intervals. \emph{Statistical Science}.

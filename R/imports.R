@@ -101,6 +101,7 @@
 #'
 #' @importFrom stringi stri_replace
 #' @importFrom stringi stri_detect
+#' @importFrom stringi stri_extract
 #'
 #' @importFrom stats var
 #' @importFrom stats cor

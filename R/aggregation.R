@@ -65,24 +65,43 @@
 
     }
 
+    ## checking if there was repeated cross-validation or any cases to collapse -------
+
+    pred_data <- model.frame(x)
+
+    obs_freq <- as.numeric(table(pred_data[[".observation"]]))
+
+    if(all(obs_freq == 1)) return(x)
+
     ## data frames storing the numeric predictions and labels --------
+
+    ### extracting the repeat information and fold assignment in the first
+    ### repeat
 
     .observation <- NULL
     .outcome <- NULL
     .fitted <- NULL
     .resample <- NULL
-
-    pred_data <- model.frame(x)
+    .repeat <- NULL
 
     meta_data <-
-      filter(pred_data[, c(".observation", ".outcome", ".resample")],
-             stri_detect(.resample, regex = "Rep1$"))
+      pred_data[, c(".observation", ".outcome", ".resample")]
 
-    ## checking if there was repeated cross-validation or any cases to collapse -------
+    meta_data[[".repeat"]] <- stri_extract(meta_data[[".resample"]],
+                                           regex = "Rep\\d+$")
 
-    obs_freq <- as.numeric(table(pred_data[[".observation"]]))
+    meta_data[[".repeat"]] <-
+      as.numeric(stri_extract(meta_data[[".repeat"]],
+                              regex = "\\d+$"))
 
-    if(all(obs_freq == 1)) return(x)
+    meta_data <-
+      filter(meta_data, .repeat == 1)
+
+    meta_data[[".resample"]] <- stri_replace(meta_data[[".resample"]],
+                                             regex = "\\..*",
+                                             replacement = "")
+
+    meta_data <- select(meta_data, -.repeat)
 
     ## testing and wrapping the fun function --------
 

@@ -131,6 +131,8 @@
 
   summary(test_multi_pred$cv, ci_method = 'bca')
 
+  summary(test_class_pred$train, ci_method = 'bca')
+
   ## summary, caretx models
 
   summary(caretx_class, newdata = testClass)

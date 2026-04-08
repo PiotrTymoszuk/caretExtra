@@ -121,6 +121,17 @@
 
     }
 
+    statistic <- NULL
+    estimate <- NULL
+    lower_ci <- NULL
+    upper_ci <- NULL
+
+    summ_object <- rbind(tibble(statistic = "n",
+                                estimate = nobs(object),
+                                lower_ci = NA,
+                                upper_ci = NA),
+                         summ_object)
+
     if(!wide) return(summ_object)
 
     summ_object <- column_to_rownames(summ_object[c('statistic', 'estimate')],
